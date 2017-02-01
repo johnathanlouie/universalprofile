@@ -1,6 +1,8 @@
 
 package combiner;
 
+import entity.Entity;
+import entity.Person;
 import java.util.LinkedList;
 
 /**

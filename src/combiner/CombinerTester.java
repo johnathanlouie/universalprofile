@@ -1,6 +1,7 @@
 
 package combiner;
 
+import entity.Person;
 import java.io.File;
 
 import java.util.LinkedList;

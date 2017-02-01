@@ -1,6 +1,8 @@
 
 package combiner;
 
+import entity.Person;
+
 /**
  *
  * SpecialPersonChecker class implements interface SimilarityChecker
