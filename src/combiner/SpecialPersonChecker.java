@@ -34,9 +34,9 @@ public class SpecialPersonChecker implements SimilarityChecker
         p1 = (Person)o1;
         p2 = (Person)o2;
         
-        if(p1.getName().equals(p2.getName()))
-            sim+= 10;
         if(p1.getEmail().equals(p2.getEmail()))
+            sim+= 10;
+        if(p1.getName().equals(p2.getName()))
             sim+= 6;
         if(p1.getCity().equals(p2.getCity()))
             sim+= 1;
