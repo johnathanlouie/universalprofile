@@ -101,6 +101,8 @@ public class CombinerTester
         CombinerEngine combiner;
         String f1,f2;
         combiner = new CombinerEngine(new SpecialPersonChecker());
+        //Please change this path on your system as this is a specific path
+        // Or else get ready to Crash .......... Burrrrrr 
         f1= "/home/sashi/Documents/Winter2017/CS599/file.xml";
         f2= "/home/sashi/Documents/Winter2017/CS599/file2.xml";
         LinkedList c1 = xmlDocument(f2);
