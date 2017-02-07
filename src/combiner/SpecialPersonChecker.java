@@ -20,21 +20,10 @@ import entity.Person;
  */
 public class SpecialPersonChecker extends EntityChecker 
 {
-    private double threshold;
     
     public SpecialPersonChecker()
     {
         this.threshold = 6.0;
-    }
-    
-    public void setThreshold(double newThreshold)
-    {
-        this.threshold = newThreshold;
-    }
-    
-    public double getThreshold()
-    {
-        return this.threshold;
     }
     
     @Override
