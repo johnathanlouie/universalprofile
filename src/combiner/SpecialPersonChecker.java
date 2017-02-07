@@ -5,12 +5,20 @@ import entity.Person;
 
 /**
  *
- * SpecialPersonChecker class implements interface SimilarityChecker
- *  And checks similarity between two Person objects
- *  
+ * SpecialPersonChecker class extends EntityChecker
+ *  Checks similarity between two Person objects using weighted boolean
+ *      String comparison
+ * 
+ *      Fields      Weight
+ *      Email       10.0
+ *      Name        6.0
+ *      City        1.0
+ *      ...         1.0
+ * 
+ *      Default threshold = 6.0   
  * @author sashi
  */
-public class SpecialPersonChecker implements SimilarityChecker 
+public class SpecialPersonChecker extends EntityChecker 
 {
     private double threshold;
     
@@ -45,19 +53,19 @@ public class SpecialPersonChecker implements SimilarityChecker
         p2 = (Person)o2;
         
         if(p1.getEmail().equals(p2.getEmail()))
-            sim+= 10;
+            sim+= 10.0;
         if(p1.getName().equals(p2.getName()))
-            sim+= 6;
+            sim+= 6.0;
         if(p1.getCity().equals(p2.getCity()))
-            sim+= 1;
+            sim+= 1.0;
         if(p1.getState().equals(p2.getState()))
-            sim+= 1;
+            sim+= 1.0;
         if(p1.getCountry().equals(p2.getCountry()))
-            sim+= 1;
+            sim+= 1.0;
         if(p1.getBirthDate().equals(p2.getBirthDate()))
-            sim+= 1;
+            sim+= 1.0;
         if(p1.getEducation().equals(p2.getEducation()))
-            sim+= 1;
+            sim+= 1.0;
         
         return sim;
     }
