@@ -19,6 +19,16 @@ public class SpecialPersonChecker implements SimilarityChecker
         this.threshold = 6.0;
     }
     
+    public void setThreshold(double newThreshold)
+    {
+        this.threshold = newThreshold;
+    }
+    
+    public double getThreshold()
+    {
+        return this.threshold;
+    }
+    
     @Override
     public boolean isSimilar(Object o1, Object o2) 
     {
