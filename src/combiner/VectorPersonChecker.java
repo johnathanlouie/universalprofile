@@ -4,7 +4,7 @@ import entity.Person;
 import info.debatty.java.stringsimilarity.*;
 
 /** 
- * VecotrPersonChecker class extends EntityChecker
+ * VectorPersonChecker class extends EntityChecker
  *  Checks similarity between two Person objects using Vector Space model.
  *      Uses cosine similarity between the two Person Vectors to check for similarity 
  *      Gives weight to fields like email, name, and city
