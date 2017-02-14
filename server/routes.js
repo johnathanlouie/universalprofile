@@ -9,6 +9,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static("client"));
 
+app.get("/", function(req, res)
+{
+	res.sendFile("profilegenerator.html", {root: "client"});
+});
+
 app.get("/profiles/facebook", getFbHandler);
 app.get("/profiles/linkedin", getLiHandler);
 app.get("/profiles/google", getGpHandler);

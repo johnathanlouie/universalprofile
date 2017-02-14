@@ -3,9 +3,10 @@
 	<head>
 		<meta charset="utf-8">
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<link href="styles.css" rel="stylesheet">
 	</head>
 	<body>
-		<form action="profilecreator.php" method="post" id="form">
+		<form id="form">
 			<input placeholder="first name" name="fname" id="fname">
 			<input placeholder="middle name" name="mname" id="mname">
 			<input placeholder="last name" name="lname" id="lname">
@@ -23,18 +24,14 @@
 			<input placeholder="birth day" name="bday" id="bday">
 			<hr>
 			<input placeholder="address number" name="addrnum1" id="addrnum1">
-			<input placeholder="N, E, S, or W" name="dir1" id="dir1">
-			<input placeholder="street name" name="stname1" id="stname1">
-			<input placeholder="st, ave, etc" name="sttype1" id="sttype1">
+			<input placeholder="street" name="stname1" id="stname1">
 			<input placeholder="apartment number" name="aptnum1" id="aptnum1">
 			<input placeholder="city" name="city1" id="city1">
 			<input placeholder="state" name="state1" id="state1">
 			<input placeholder="zip" name="zip1" id="zip1">
 			<hr>
 			<input placeholder="address number" name="addrnum2" id="addrnum2">
-			<input placeholder="N, E, S, or W" name="dir2" id="dir2">
-			<input placeholder="street name" name="stname2" id="stname2">
-			<input placeholder="st, ave, etc" name="sttype2" id="sttype2">
+			<input placeholder="street" name="stname2" id="stname2">
 			<input placeholder="apartment number" name="aptnum2" id="aptnum2">
 			<input placeholder="city" name="city2" id="city2">
 			<input placeholder="state" name="state2" id="state2">
@@ -61,10 +58,12 @@
 			<input placeholder="minor 1" name="min31" id="min31">
 			<input placeholder="minor 2" name="min32" id="min32">
 			<hr>
-			<input placeholder="google, facebook, linkedin" name="src" id="src">
-			<input type="button" onclick="manualCreate();" value="Submit">
+			<input type="button" onclick="manualCreate();" value="Create Profile">
 			<input type="reset">
 		</form>
+		<textarea id="test"></textarea>
+		<input placeholder="google, facebook, linkedin" name="src" id="src">
+		<input type="button" onclick="insertDb();" value="Insert Database">
 		<!--
 		<input placeholder="" name="" id="">
 		<input placeholder="" name="" id="">

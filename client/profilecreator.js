@@ -1,61 +1,92 @@
 function manualCreate()
 {
-	var profile = {};
-	profile.name = {};
-	profile.name.first = $("#fname").val();
-	profile.name.middle = $("#mname").val();
-	profile.name.last = $("#lname").val();
-	profile.phone = [];
-	profile.phone.push($("#phone1").val());
-	profile.phone.push($("#phone2").val());
-	profile.phone.push($("#phone3").val());
-	profile.email = [];
-	profile.email.push($("#email1").val());
-	profile.email.push($("#email2").val());
-	profile.email.push($("#email3").val());
-	profile.gender = $("#gender").val();
-	profile.birth = {};
-	profile.birth.year = $("#byr").val();
-	profile.birth.month = $("#bmnth").val();
-	profile.birth.day = $("#bday").val();
-	var addr1 = {};
-	addr1.street = {};
-	addr1.street.number = $("#addrnum1").val();
-	addr1.street.name = $("#stname1").val();
-	addr1.street.type = $("#sttype1").val();
-	addr1.street.direction = $("#dir1").val();
-	addr1.street.apartmentNumber = $("#aptnum1").val();
-	addr1.city = $("#city1").val();
-	addr1.state = $("#state1").val();
-	addr1.zipCode = $("#zip1").val();
-	var addr2 = {};
-	addr2.street = {};
-	addr2.street.number = $("#addrnum2").val();
-	addr2.street.name = $("#stname2").val();
-	addr2.street.type = $("#sttype2").val();
-	addr2.street.direction = $("#dir2").val();
-	addr2.street.apartmentNumber = $("#aptnum2").val();
-	addr2.city = $("#city2").val();
-	addr2.state = $("#state2").val();
-	addr2.zipCode = $("#zip2").val();
-	profile.address = [addr1, addr2];
-	var school1 = {};
-	school1.name = $("#school1").val();
-	school1.gpa = $("#gpa1").val();
-	school1.major = [$("#mjr11").val(), $("#mjr12").val()];
-	school1.minor = [$("#min11").val(), $("#min12").val()];
-	var school2 = {};
-	school2.name = $("#school2").val();
-	school2.gpa = $("#gpa2").val();
-	school2.major = [$("#mjr21").val(), $("#mjr22").val()];
-	school2.minor = [$("#min21").val(), $("#min22").val()];
-	var school3 = {};
-	school3.name = $("#school3").val();
-	school3.gpa = $("#gpa3").val();
-	school3.major = [$("#mjr31").val(), $("#mjr32").val()];
-	school3.minor = [$("#min31").val(), $("#min32").val()];
-	profile.education = [school1, school2, school3];
-	send(profile, $("#src").val());
+	var name = new Name($("#fname").val(), $("#mname").val(), $("#lname").val());
+	var phone = [$("#phone1").val(), $("#phone2").val(), $("#phone3").val()];
+	var email = [$("#email1").val(), $("#email2").val(), $("#email3").val()];
+	var sex = $("#gender").val();
+	var birth = new Birth($("#byr").val(), $("#bmnth").val(), $("#bday").val());
+	var addr1 = new Address(
+	$("#addrnum1").val(),
+	$("#stname1").val(),
+	$("#aptnum1").val(),
+	$("#city1").val(),
+	$("#state1").val(),
+	$("#zip1").val()
+	);
+	var addr2 = new Address(
+	$("#addrnum2").val(),
+	$("#stname2").val(),
+	$("#aptnum2").val(),
+	$("#city2").val(),
+	$("#state2").val(),
+	$("#zip2").val()
+	);
+	var address = [addr1, addr2];
+	var school1 = new School(
+	$("#school1").val(),
+	$("#gpa1").val(),
+	[$("#mjr11").val(), $("#mjr12").val()],
+	[$("#min11").val(), $("#min12").val()]
+	);
+	var school2 = new School(
+	$("#school2").val(),
+	$("#gpa2").val(),
+	[$("#mjr21").val(), $("#mjr21").val()],
+	[$("#min22").val(), $("#min22").val()]
+	);
+	var school3 = new School(
+	$("#school3").val(),
+	$("#gpa3").val(),
+	[$("#mjr31").val(), $("#mjr31").val()],
+	[$("#min32").val(), $("#min32").val()]
+	);
+	var education = [school1, school2, school3];
+	var profile = new Profile(name, sex, phone, email, address, birth, education);
+	cleanObject(profile);
+	$("#test").text(JSON.stringify(profile));
+}
+
+function Profile(name, sex, phone, email, address, birth, education)
+{
+	this.name = name;
+	this.sex = sex;
+	this.phone = phone;
+	this.email = email;
+	this.address = address;
+	this.birth = birth;
+	this.education = education;
+}
+
+function Name(first, middle, last)
+{
+	this.first = first;
+	this.middle = middle;
+	this.last = last;
+}
+
+function Birth(year, month, day)
+{
+	this.year = year;
+	this.month = month;
+	this.day = day;
+}
+
+function Address(number, street, apartment, city, state, zip)
+{
+	this.number = number;
+	this.street = street;
+	this.apartment = apartment;
+	this.city = city;
+	this.state = state;
+	this.zipCode = zip;
+}
+
+function School(name, gpa, major, minor)
+{
+	this.name = name;
+	this.gpa = gpa;
+	this.major = major;
+	this.minor = minor;
 }
 
 // chance a user fills out a field
@@ -68,6 +99,7 @@ var chance =
 	birthYear: 0.4,
 	address: 0.05
 };
+
 // average number of phones, emails, schools, etc attended for users
 // from 0 to any positive real number
 var avgNum =
@@ -76,9 +108,10 @@ var avgNum =
 	phone: 1.2,
 	school: 1.3
 };
-const profileNum = 1000;
+
 function autoCreate()
 {
+	var profileNum = Number($("#profilenum").val());
 	var male = textareaList("#male");
 	var female = textareaList("#female");
 	var last = textareaList("#last");
@@ -91,127 +124,159 @@ function autoCreate()
 	var profiles = [];
 	for (let x = 0; x < profileNum; x++)
 	{
-		var profile = {};
-		profile.gender = genderGen();
-		profile.name = {};
-		if (profile.gender === "male")
-		{
-			profile.name.first = pickRandom(male);
-			profile.name.middle = thisOrEmpty(pickRandom(male), chance.middleName);
-		}
-		else
-		{
-			profile.name.first = pickRandom(female);
-			profile.name.middle = thisOrEmpty(pickRandom(female), chance.middleName);
-		}
-		profile.name.last = pickRandom(last);
-		profile.birth = {};
-		if (randomChance(chance.birth))
-		{
-			profile.birth.year = thisOrEmpty(byearGen(), chance.birthYear);
-			profile.birth.month = bmonthGen();
-			profile.birth.day = bdayGen(profile.birth.month);
-		}
-		else
-		{
-			profile.birth.year = "";
-			profile.birth.month = "";
-			profile.birth.year = "";
-		}
-		profile.phone = [];
-		for (let i = 0, max = 4; i < max; i++)
-		{
-			if (randomChance(avgChance(avgNum.phone, max)))
-			{
-				profile.phone.push(phoneGen());
-			}
-		}
-		profile.email = [];
-		for (let i = 0, max = 4; i < max; i++)
-		{
-			if (randomChance(avgChance(avgNum.email, max)))
-			{
-				profile.email.push(emailGen(profile.name.first, profile.name.middle, profile.name.last, profile.birth.year, profile.birth.month, profile.birth.day, words));
-			}
-		}
-		profile.address =
-		[
-			thisOrEmpty({
-				city: pickRandom(city),
-				state: pickRandom(state),
-				zipCode: zipGen(),
-				street:
-				{
-					apartmentNumber: thisOrEmpty(1 + Math.round(Math.random() * 9999), 0.1),
-					name: pickRandom(street),
-					number: stNumGen(),
-					type: pickRandom(stTypes),
-					direction: (() => {
-						let rand = Math.random();
-						if (rand < 0.125)
-						{
-							return "N";
-						}
-						else if (rand < 0.25)
-						{
-							return "S";
-						}
-						else if (rand < 0.375)
-						{
-							return "E";
-						}
-						else if (rand < 0.5)
-						{
-							return "W";
-						}
-						else
-						{
-							return "";
-						}
-					})()
-				}
-			}, 0.4)
-		];
-		profile.education = [];
-		for (let i = 0, max = 4; i < max; i++)
-		{
-			if (randomChance(avgChance(avgNum.school, max)))
-			{
-				profile.education.push(schoolGen(school, subject));
-			}
-		}
-		profiles.push(profile);
+		profiles.push(AutoProfile(male, female, last, street, city, state, school, subject, words));
 	}
-	cleanObject(profiles);
+	cleanArray(profiles);
 	$("#test").text(JSON.stringify(profiles));
 }
 
-function genderGen()
+function insertDb()
+{
+	send($("#test").text(), $("#src").val());
+}
+
+function AutoProfile(maleNames, femaleNames, lastNames, streetNames, city, state, schoolNames, subject, words)
+{
+	var sex = genSex();
+	var name = AutoName(sex, maleNames, femaleNames, lastNames);
+	var birth = {};
+	if (randomChance(chance.birth))
+	{
+		birth = AutoBirth();
+	}
+	var phone = [];
+	for (let i = 0, max = 4; i < max; i++)
+	{
+		if (randomChance(avgChance(avgNum.phone, max)))
+		{
+			phone.push(genPhone());
+		}
+	}
+	var email = [];
+	for (let i = 0, max = 4; i < max; i++)
+	{
+		if (randomChance(avgChance(avgNum.email, max)))
+		{
+			if (randomChance(1 / 3))
+			{
+				email.push(genEmail1(name, birth));
+			}
+			else
+			{
+				email.push(genEmail2(words));
+			}
+		}
+	}
+	var address =
+	[
+		thisOrEmpty(AutoAddress(streetNames, city, state), 0.4)
+	];
+	var education = [];
+	for (let i = 0, max = 4; i < max; i++)
+	{
+		if (randomChance(avgChance(avgNum.school, max)))
+		{
+			education.push(AutoSchool(schoolNames, subject));
+		}
+	}
+	var profile = new Profile(name, sex, phone, email, address, birth, education);
+	return profile;
+}
+
+function AutoAddress(street, city, state)
+{
+	return new Address(
+	genStNum(),
+	pickRandom(street),
+	genAptNum(),
+	pickRandom(city),
+	pickRandom(state),
+	genZip()
+	);
+}
+
+function genAptNum()
+{
+	return thisOrEmpty(String(1 + Math.round(Math.random() * 9999)), 0.1);
+}
+
+function genStDir()
+{
+	let rand = Math.random();
+	if (rand < 0.125)
+	{
+		return "N";
+	}
+	else if (rand < 0.25)
+	{
+		return "S";
+	}
+	else if (rand < 0.375)
+	{
+		return "E";
+	}
+	else if (rand < 0.5)
+	{
+		return "W";
+	}
+	else
+	{
+		return "";
+	}
+}
+
+function AutoName(sex, male, female, last)
+{
+	var f = "";
+	var m = "";
+	var l = "";
+	if (sex === "male")
+	{
+		f = pickRandom(male);
+		m = thisOrEmpty(pickRandom(male), chance.middleName);
+	}
+	else
+	{
+		f = pickRandom(female);
+		m = thisOrEmpty(pickRandom(female), chance.middleName);
+	}
+	l = pickRandom(last);
+	return new Name(f, m, l);
+}
+
+function genSex()
 {
 	return randomChance(0.5) ? "male" : "female";
 }
 
-function schoolGen(schoolNames, subjects)
+function AutoBirth()
 {
-	var school = {};
-	school.gpa = gpaGen();
-	school.name = pickRandom(schoolNames);
-	school.major = [];
-	school.minor = [];
-	school.major.push(pickRandom(subjects));
+	var year = thisOrEmpty(genByear(), chance.birthYear);
+	var month = genBmonth();
+	var day = genBday(month);
+	return new Birth(year, month, day);
+}
+
+function AutoSchool(names, subjects)
+{
+	var gpa = genGpa();
+	var name = pickRandom(names);
+	var major = [];
+	var minor = [];
+	major.push(pickRandom(subjects));
 	if (randomChance(0.05))
 	{
-		school.major.push(pickRandom(subjects));
+		major.push(pickRandom(subjects));
 	}
 	if (randomChance(0.05))
 	{
-		school.minor.push(pickRandom(subjects));
+		minor.push(pickRandom(subjects));
 	}
 	if (randomChance(0.05))
 	{
-		school.minor.push(pickRandom(subjects));
+		minor.push(pickRandom(subjects));
 	}
-	return school;
+	return new School(name, gpa, major, minor);
 }
 
 var providers =
@@ -235,21 +300,22 @@ var stTypes =
 	"dr"
 ];
 
-function stNumGen()
+function genStNum()
 {
-	return 1 + Math.round(Math.random() * 9999);
+	return  String(1 + Math.round(Math.random() * 9999));
 }
 
-function emailGen(first, middle, last, byear, bmonth, bday, words)
+function genEmail1(name, birth)
 {
-	if (randomChance(1 / 3))
-	{
-		return `${first}.${last}@${pickRandom(providers)}.com`.toLowerCase();
-	}
+	return `${name.first}.${name.last}@${pickRandom(providers)}.com`.toLowerCase();
+}
+
+function genEmail2(words)
+{
 	return `${pickRandom(words)}${pickRandom(words)}${Math.round(Math.random() * 99999)}@${pickRandom(providers)}.com`.toLowerCase();
 }
 
-function zipGen()
+function genZip()
 {
 	var str = "";
 	for (let i = 0; i < 5; i++)
@@ -259,7 +325,7 @@ function zipGen()
 	return str;
 }
 
-function bdayGen(month)
+function genBday(month)
 {
 	var days;
 	switch (Number(month))
@@ -279,12 +345,12 @@ function bdayGen(month)
 	return String(1 + Math.round(Math.random() * (days - 1)));
 }
 
-function bmonthGen()
+function genBmonth()
 {
 	return String(1 + Math.round(Math.random() * 11));
 }
 
-function byearGen()
+function genByear()
 {
 	return String(2017 - 120 + Math.round(Math.random() * 120));
 }
@@ -304,7 +370,7 @@ function thisOrEmpty(value, chance)
 	return "";
 }
 
-function phoneGen()
+function genPhone()
 {
 	var str = "";
 	for (let i = 0; i < 10; i++)
@@ -326,7 +392,7 @@ function randomChance(chance)
 	return chance >= 1 || Math.random() < chance;
 }
 
-function gpaGen()
+function genGpa()
 {
 	return String(Math.round(Math.random() * 500) / 100);
 }
@@ -412,10 +478,7 @@ function cleanArray(array)
 
 function send(data, db)
 {
-	if (cleanObject(data))
-	{
-		$.post(`/profiles/${db}`, data, (res, status) => {
-			alert(`response: ${res}\nstatus: ${status}`);
-		}, "json");
-	}
+	$.post(`/profiles/${db}`, data, (res, status) => {
+		alert(`response: ${res}\nstatus: ${status}`);
+	}, "json");
 }
