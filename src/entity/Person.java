@@ -2,6 +2,7 @@
 package entity;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Set;
 
 
@@ -17,7 +18,9 @@ public class Person extends Entity
      * These fields are keys to store and retrieve values from the (HashMap) fieldValuePair
      * of Person
      */
-    private final String fieldName="Name";
+    private final String fieldFirstName="FirstName";
+    private final String fieldMiddleName="MiddleName";
+    private final String fieldLastName="LastName";
     private final String fieldEducation="Education";
     private final String fieldEmail="Email";
     private final String fieldBirthDate = "DOB";
@@ -34,16 +37,51 @@ public class Person extends Entity
         this.init();
     }
     
-    public void setName(String newName)
+    public void setFirstName(String newName)
     {
-        this.fieldValuePair.put(this.fieldName, newName);
+        this.fieldValuePair.put(this.fieldFirstName, newName);
     }
     
-    public void setEducation(String newEducation)
+    public void setMiddleName(String newName)
     {
+        this.fieldValuePair.put(this.fieldMiddleName, newName);
+    }
+    
+    public void setLastName(String newName)
+    {
+        this.fieldValuePair.put(this.fieldLastName, newName);
+    }
+    
+    /**
+     * 
+     * @param newEducation is array representing all the attributes of one education
+     *  Contains all the education attribute in the following format
+     *      newEducation[0] => school name
+     *      newEducation[1] => gpa
+     *      newEducation[3] => major1
+     *      newEducation[4] => major2
+     *      ...             => majorN
+     */
+    public void setEducation(String[] newEducation)
+    {
+        Education ed;
+        ed = new Education();
+        
+        ed.school = newEducation[0];
+        ed.gpa = Double.parseDouble(newEducation[1]);
+        for(int i=2; i<newEducation.length; i++)
+            ed.major.add(newEducation[i]);
+        
         this.fieldValuePair.put(this.fieldEducation, newEducation);
+        
+        this.setEducation(ed);
     }
     
+    public void setEducation(Education newEducation)
+    {
+        ((LinkedList<Education>)this.fieldValuePair.get(this.fieldEducation)).add(newEducation);
+    }
+        
     public void setEmail(String newEmail)
     {
         this.fieldValuePair.put(this.fieldEmail, newEmail);
@@ -69,47 +107,94 @@ public class Person extends Entity
         this.fieldValuePair.put(this.fieldCountry, newCountry);
     }
                 
-    public String getName()
+    public String getFullName()
     {
-        return this.fieldValuePair.get(this.fieldName);
+        StringBuilder fullName;
+        fullName = new StringBuilder();
+        fullName.append(this.fieldValuePair.get(this.fieldFirstName));
+        fullName.append(" ");
+        fullName.append(this.fieldValuePair.get(this.fieldMiddleName));
+        fullName.append(" ");
+        fullName.append(this.fieldValuePair.get(this.fieldLastName));
+        return fullName.toString();
     }
     
-    public String getEducation()
+    public String getFirstName()
     {
-        return this.fieldValuePair.get(this.fieldEducation);
+        return (String) this.fieldValuePair.get(this.fieldFirstName);
+    }
+    
+    public String getMiddleName()
+    {
+        return (String) this.fieldValuePair.get(this.fieldMiddleName);
+    }
+     
+    public String getLastName()
+    {
+        return (String) this.fieldValuePair.get(this.fieldLastName);
+    }
+    
+    /**
+     * 
+     * @return string representation of all the education of this person object
+     *      Example:
+     *              {"UCBerkeley, 3.6, Mathematics, Computer Science","Stanford, 4.0, Computer Science"}
+     */
+    public String[] getEducation()
+    {
+        LinkedList<Education> edList;
+        String [] ed;
+        edList = (LinkedList<Education>) this.fieldValuePair.get(this.fieldEducation);
+        ed = new String[edList.size()];
+        
+        for(int i=0; i<edList.size(); i++)
+        {
+            Education cur; 
+            cur = edList.get(i);
+            ed[i] = cur.toString();
+
+        }
+        return ed;
+    }
+    
+    public LinkedList<Education> getEducationList()
+    {
+        return (LinkedList<Education>)this.fieldValuePair.get(this.fieldEducation);
     }
     
     public String getEmail()
     {
-        return this.fieldValuePair.get(this.fieldEmail);
+        return (String) this.fieldValuePair.get(this.fieldEmail);
     }
        
     public String getBirthDate()
     {
-        return this.fieldValuePair.get(this.fieldBirthDate);
+        return (String) this.fieldValuePair.get(this.fieldBirthDate);
     }
     
     public String getCity()
     {
-        return this.fieldValuePair.get(this.fieldCity);
+        return (String) this.fieldValuePair.get(this.fieldCity);
     }
     
     public String getState()
     {
-        return this.fieldValuePair.get(this.fieldState);
+        return (String) this.fieldValuePair.get(this.fieldState);
     }
     
     public String getCountry()
     {
-        return this.fieldValuePair.get(this.fieldCountry);
+        return (String) this.fieldValuePair.get(this.fieldCountry);
     }
          
     
     public final void init()
     {
-        this.fieldValuePair.put(this.fieldName, "");
+        this.fieldValuePair.put(this.fieldFirstName, "");
+        this.fieldValuePair.put(this.fieldMiddleName, "");
+        this.fieldValuePair.put(this.fieldLastName, "");
         this.fieldValuePair.put(this.fieldEmail, "");
-        this.fieldValuePair.put(this.fieldEducation, "");
+        this.fieldValuePair.put(this.fieldEducation, new LinkedList<Education>());
         this.fieldValuePair.put(this.fieldCity, "");
         this.fieldValuePair.put(this.fieldState, "");
         this.fieldValuePair.put(this.fieldCountry, "");

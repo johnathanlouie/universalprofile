@@ -50,7 +50,7 @@ public class VectorPersonChecker extends EntityChecker
         cosVal = cos.similarity(p1.getEmail(), p2.getEmail());
         if(cosVal!=0.0) sim+=20.0+Math.log(cosVal);
         
-        cosVal = cos.similarity(p1.getName(), p2.getName());
+        cosVal = cos.similarity(p1.getFullName(), p2.getFullName());
         if(cosVal!=0.0) sim+=10.0+Math.log(cosVal);
         
         cosVal = cos.similarity(p1.getCity(), p2.getCity());
@@ -62,8 +62,15 @@ public class VectorPersonChecker extends EntityChecker
         cosVal = cos.similarity(p1.getState(), p2.getState());
         if(cosVal!=0.0) sim+=Math.log(cosVal);
         
-        cosVal = cos.similarity(p1.getEducation(), p2.getEducation());
-        if(cosVal!=0.0) sim+=Math.log(cosVal);
+        
+        String[]ed1,ed2;
+        ed1 = p1.getEducation();
+        ed2 = p2.getEducation();
+        for(int i=0; i<ed1.length && i<ed2.length; i++)
+        {
+            cosVal = cos.similarity(ed1[i], ed2[i]);
+            if(cosVal!=0.0) sim+=Math.log(cosVal);
+        }
         
         cosVal = cos.similarity(p1.getBirthDate(), p2.getBirthDate());
         if(cosVal!=0.0) sim+=Math.log(cosVal);

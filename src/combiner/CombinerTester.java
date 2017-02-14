@@ -29,14 +29,14 @@ public class CombinerTester
     {
         Person per;
         per = new Person();
-        
-        per.setName(profile.getElementsByTagName("Name").item(0).getTextContent());
+        per.setFirstName(profile.getElementsByTagName("FirstName").item(0).getTextContent());
+        per.setMiddleName(profile.getElementsByTagName("MiddleName").item(0).getTextContent());
+        per.setLastName(profile.getElementsByTagName("LastName").item(0).getTextContent());
         per.setEmail(profile.getElementsByTagName("Email").item(0).getTextContent());
         per.setBirthDate(profile.getElementsByTagName("BirthDate").item(0).getTextContent());
         per.setCity(profile.getElementsByTagName("City").item(0).getTextContent());
         per.setState(profile.getElementsByTagName("State").item(0).getTextContent());
         per.setCountry(profile.getElementsByTagName("Country").item(0).getTextContent());
-      
         return per;
     }
     
@@ -78,7 +78,7 @@ public class CombinerTester
         }
         catch(Exception ex)
         {
-            System.out.println(ex.toString());
+            System.out.println("error:"+ex.toString());
         }
         
         return listP;
@@ -100,11 +100,11 @@ public class CombinerTester
     {
         CombinerEngine combiner;
         String f1,f2;
-        combiner = new CombinerEngine(new JaroWinklerPersonChecker());
+        combiner = new CombinerEngine(new SpecialPersonChecker());
         //Please change this path on your system as this is a specific path
         // Or else get ready to Crash .......... Burrrrrr 
-        f1= "/home/sashi/Documents/Winter2017/CS599/file.xml";
-        f2= "/home/sashi/Documents/Winter2017/CS599/file2.xml";
+        f1= "/home/sashi/NetBeansProjects/Combiner/src/test/file.xml";
+        f2= "/home/sashi/NetBeansProjects/Combiner/src/test/file2.xml";
         LinkedList c1 = xmlDocument(f2);
         LinkedList c2 = xmlDocument(f1);
         

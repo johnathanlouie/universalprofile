@@ -2,6 +2,7 @@
 package entity;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 
 /**
@@ -24,14 +25,28 @@ public class PersonMerger implements EntityOperator
 
         while(field1.hasNext())
         {
-            String f1,f2,v1,v2;
+            String f1,f2;
+            Object v1,v2;
             f1 = field1.next();
             f2 = field2.next();
-
+            
             v1 = o1.fieldValuePair.get(f1);
             v2 = o2.fieldValuePair.get(f2);
             
-            if(v1.length()>v2.length())
+            if(f1.equals("Education"))
+            {
+                
+                v1 = this.getFullEducation(((Person)o1).getEducation());
+                v2 = this.getFullEducation(((Person)o2).getEducation());
+            }
+            else if(f1.equals("Email"))
+            {
+                //do something similar to above
+                
+            }
+            
+            
+            if(((String)v1).length()>((String)v2).length())
             {
                 merged.fieldValuePair.put(f1, v1);
             }
@@ -43,6 +58,19 @@ public class PersonMerger implements EntityOperator
         }
         
         return merged;
+    }
+    
+    public String getFullEducation(String[] allEd)
+    {
+        StringBuilder full;
+        full = new StringBuilder("");
+        
+        for(int i=0;i<allEd.length; i++)
+        {
+            full.append(allEd[i]);
+            full.append(" ");
+        }
+        return full.toString();
     }
     
 }

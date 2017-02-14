@@ -43,7 +43,7 @@ public class SpecialPersonChecker extends EntityChecker
         
         if(p1.getEmail().equals(p2.getEmail()))
             sim+= 10.0;
-        if(p1.getName().equals(p2.getName()))
+        if(p1.getFullName().equals(p2.getFullName()))
             sim+= 6.0;
         if(p1.getCity().equals(p2.getCity()))
             sim+= 1.0;
