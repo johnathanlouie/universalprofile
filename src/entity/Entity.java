@@ -21,7 +21,7 @@ import java.util.HashMap;
 public abstract class Entity 
 {
     
-    public HashMap<String, String> fieldValuePair;
+    public HashMap<String, Object> fieldValuePair;
     
     public Entity()
     {
