@@ -10,7 +10,7 @@ cd <project home>
 npm install
 npm start
 ```
-# Note For Debian
+# Note For Linux
 * Need to change node to nodejs
 * Need to change (character) ~ to (character) '
 
