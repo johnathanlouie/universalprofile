@@ -39,17 +39,20 @@ public class Person extends Entity
     
     public void setFirstName(String newName)
     {
-        this.fieldValuePair.put(this.fieldFirstName, newName);
+        if(newName.length()>1)
+            this.fieldValuePair.put(this.fieldFirstName, newName);
     }
     
     public void setMiddleName(String newName)
     {
-        this.fieldValuePair.put(this.fieldMiddleName, newName);
+        if(newName.length()>1)
+            this.fieldValuePair.put(this.fieldMiddleName, newName);
     }
     
     public void setLastName(String newName)
     {
-        this.fieldValuePair.put(this.fieldLastName, newName);
+        if(newName.length()>1)
+            this.fieldValuePair.put(this.fieldLastName, newName);
     }
     
     /**
@@ -79,32 +82,54 @@ public class Person extends Entity
     
     public void setEducation(Education newEducation)
     {
-        ((LinkedList<Education>)this.fieldValuePair.get(this.fieldEducation)).add(newEducation);
+        if(newEducation != null)
+            ((LinkedList<Education>)this.fieldValuePair.get(this.fieldEducation)).add(newEducation);
     }
-        
+    
+    public void setEducation(LinkedList<Education> newEducation)
+    {
+        if(newEducation !=null)
+        {
+            this.fieldValuePair.put(this.fieldEducation, newEducation);
+        } 
+    }
+    
     public void setEmail(String newEmail)
     {
-        this.fieldValuePair.put(this.fieldEmail, newEmail);
+        if(newEmail.length()>1)
+            ((LinkedList<String>)this.fieldValuePair.get(this.fieldEmail)).add(newEmail);
+    }
+    
+    public void setEmail(LinkedList<String> newEmail)
+    {
+        if(newEmail!=null)
+        {
+            this.fieldValuePair.put(fieldEmail, newEmail);
+        }
     }
     
     public void setBirthDate(String newBirthD)
     {
-        this.fieldValuePair.put(this.fieldBirthDate, newBirthD);
+        if(newBirthD.length()>1)
+            this.fieldValuePair.put(this.fieldBirthDate, newBirthD);
     }
     
     public void setCity(String newCity)
     {
-        this.fieldValuePair.put(this.fieldCity, newCity);
+        if(newCity.length()>1)
+            this.fieldValuePair.put(this.fieldCity, newCity);
     }
     
     public void setState(String newState)
     {
-        this.fieldValuePair.put(this.fieldState, newState);
+        if(newState.length()>1)
+            this.fieldValuePair.put(this.fieldState, newState);
     }
     
     public void setCountry(String newCountry)
     {
-        this.fieldValuePair.put(this.fieldCountry, newCountry);
+        if(newCountry.length()>1)
+            this.fieldValuePair.put(this.fieldCountry, newCountry);
     }
                 
     public String getFullName()
@@ -140,7 +165,7 @@ public class Person extends Entity
      *      Example:
      *              {"UCBerkeley, 3.6, Mathematics, Computer Science","Stanford, 4.0, Computer Science"}
      */
-    public String[] getEducation()
+    public String[] getAllEducation()
     {
         LinkedList<Education> edList;
         String [] ed;
@@ -162,11 +187,50 @@ public class Person extends Entity
         return (LinkedList<Education>)this.fieldValuePair.get(this.fieldEducation);
     }
     
+    public String getEducation()
+    {
+        StringBuilder allEd;
+        String[] ed;
+        allEd = new StringBuilder("");
+        ed = this.getAllEducation();
+        for(int i=0; i<ed.length; i++)
+        {
+            allEd.append(ed[i]);
+            allEd.append(" ");
+        }
+        
+        return allEd.toString();
+    }
+    
     public String getEmail()
     {
-        return (String) this.fieldValuePair.get(this.fieldEmail);
+        StringBuilder em;
+        String[] allEm;
+        em = new StringBuilder("");
+        allEm = this.getAllEmail();
+        for(int i=0; i<allEm.length; i++)
+        {
+            em.append(allEm[i]);
+            em.append(" ");
+        }
+        return em.toString();
     }
        
+    public LinkedList<String> getEmailList()
+    {
+        return (LinkedList<String>) this.fieldValuePair.get(this.fieldEmail);
+    }
+    
+    public String[] getAllEmail()
+    {
+        LinkedList<String> list;
+        String[] allEm;
+        list = (LinkedList<String>) this.fieldValuePair.get(this.fieldEmail);
+        allEm = new String[list.size()];
+        list.toArray(allEm);
+        return allEm;
+    }
+    
     public String getBirthDate()
     {
         return (String) this.fieldValuePair.get(this.fieldBirthDate);
@@ -193,7 +257,7 @@ public class Person extends Entity
         this.fieldValuePair.put(this.fieldFirstName, "");
         this.fieldValuePair.put(this.fieldMiddleName, "");
         this.fieldValuePair.put(this.fieldLastName, "");
-        this.fieldValuePair.put(this.fieldEmail, "");
+        this.fieldValuePair.put(this.fieldEmail, new LinkedList<String>());
         this.fieldValuePair.put(this.fieldEducation, new LinkedList<Education>());
         this.fieldValuePair.put(this.fieldCity, "");
         this.fieldValuePair.put(this.fieldState, "");

@@ -39,4 +39,16 @@ public class Education
         }
         return str.toString();
     }
+    
+    public boolean equals(Education ed)
+    {
+        boolean isEqual;
+        isEqual = true;
+        
+        if(ed.gpa!=this.gpa || !ed.level.equals(this.level) || !ed.school.equals(this.school) || !ed.major.equals(this.major))
+        {
+            isEqual = false;
+        }
+        return isEqual;
+    }
 }

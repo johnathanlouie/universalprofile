@@ -3,7 +3,10 @@
         <FirstName>yong</FirstName>
         <MiddleName></MiddleName>
         <LastName>mook</LastName>
-        <Email>yong@gmail.com</Email>
+        <Emails>
+            <Email>yong@gmail.com</Email>
+            <Email>yaka@com</Email>
+        </Emails>
         <BirthDate>09/02/1980</BirthDate>
         <City>Berkeley</City>
         <State>California</State>
@@ -13,7 +16,9 @@
         <FirstName>kashi</FirstName>
         <MiddleName></MiddleName>
         <LastName>tt</LastName>
-        <Email>kashi@gmail.com</Email>
+        <Emails>
+            <Email>kashi@gmail.com</Email>
+        </Emails>
         <BirthDate>09/02/1950</BirthDate>
         <City>Tahoe</City>
         <State>California</State>
@@ -23,7 +28,9 @@
         <FirstName>kannie</FirstName>
         <MiddleName></MiddleName>
         <LastName>loser</LastName>
-        <Email>kanlos@gmail.com</Email>
+        <Emails>
+            <Email>kanlos@gmail.com</Email>
+        </Emails>
         <BirthDate></BirthDate>
         <City>Redwood</City>
         <State>Indiana</State>

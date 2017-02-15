@@ -62,17 +62,11 @@ public class JaroWinklerPersonChecker extends EntityChecker
         
         cosVal = jaro.similarity(p1.getState(), p2.getState());
         if(cosVal>0.6) sim+=cosVal;
+
         
-        String[]ed1,ed2;
-        ed1 = p1.getEducation();
-        ed2 = p2.getEducation();
-        for(int i=0; i<ed1.length && i<ed2.length; i++)
-        {
-            cosVal = jaro.similarity(ed1[i],ed2[i]);
-            if(cosVal>0.9) sim+=cosVal;
-        }
-       
-        
+        cosVal = jaro.similarity(p1.getEducation(),p2.getEducation());
+        if(cosVal>0.9) sim+=cosVal;
+
         cosVal = jaro.similarity(p1.getBirthDate(), p2.getBirthDate());
         if(cosVal>0.9) sim+=cosVal;
         

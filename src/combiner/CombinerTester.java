@@ -25,14 +25,31 @@ public class CombinerTester
 {
    
      
+    public static LinkedList<String> xmlAllEmail(NodeList email)
+    {
+        //System.out.println(((Element)email.item(0)).getElementsByTagName("Email").getLength());
+        LinkedList<String> emails;
+        NodeList emList;
+        emails = new LinkedList();
+        emList = ((Element)email.item(0)).getElementsByTagName("Email");
+      
+        for(int i=0; i<emList.getLength(); i++)
+        {
+            if(emList.item(i).getTextContent().length()>1)
+                emails.add(emList.item(i).getTextContent());
+        }
+        return emails;
+    }
+    
     public static Person xmlPerson(Element profile)
     {
         Person per;
         per = new Person();
+       
         per.setFirstName(profile.getElementsByTagName("FirstName").item(0).getTextContent());
         per.setMiddleName(profile.getElementsByTagName("MiddleName").item(0).getTextContent());
         per.setLastName(profile.getElementsByTagName("LastName").item(0).getTextContent());
-        per.setEmail(profile.getElementsByTagName("Email").item(0).getTextContent());
+        per.setEmail(xmlAllEmail((NodeList)profile.getElementsByTagName("Emails")));
         per.setBirthDate(profile.getElementsByTagName("BirthDate").item(0).getTextContent());
         per.setCity(profile.getElementsByTagName("City").item(0).getTextContent());
         per.setState(profile.getElementsByTagName("State").item(0).getTextContent());
@@ -45,7 +62,6 @@ public class CombinerTester
         LinkedList<Person>  listP;
         NodeList profList;
         listP = new LinkedList();
-        
         
         profList = profiles.getElementsByTagName("Profile");
         for(int i=0; i<profList.getLength(); i++)
@@ -70,7 +86,7 @@ public class CombinerTester
 
             //System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
             
-           
+            
             listP = xmlAllPerson(doc.getDocumentElement());
             //System.out.println("----------------------------");
 

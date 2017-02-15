@@ -3,7 +3,9 @@
         <FirstName>yong</FirstName>
         <MiddleName></MiddleName>
         <LastName>mook</LastName>
-        <Email>yong@gmail.com</Email>
+        <Emails>
+            <Email>yong@gmail.com</Email>
+        </Emails>
         <BirthDate></BirthDate>
         <City></City>
         <State>California</State>
@@ -13,7 +15,9 @@
         <FirstName>kashi</FirstName>
         <MiddleName></MiddleName>
         <LastName>tt</LastName>
-        <Email></Email>
+        <Emails>
+            <Email></Email>
+        </Emails>
         <BirthDate></BirthDate>
         <City>Tahoe</City>
         <State>California</State>
@@ -23,7 +27,9 @@
         <FirstName>Sarah</FirstName>
         <MiddleName></MiddleName>
         <LastName>Palin</LastName>
-        <Email>palin@hotmail.com</Email>
+        <Emails>
+            <Email>palin@hotmail.com</Email>
+        </Emails>
         <BirthDate></BirthDate>
         <City>Redwood</City>
         <State>Alaska</State>
