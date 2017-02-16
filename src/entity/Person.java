@@ -65,7 +65,7 @@ public class Person extends Entity
      *      newEducation[4] => major2
      *      ...             => majorN
      */
-    public void setEducation(String[] newEducation)
+    public void addEducation(String[] newEducation)
     {
         Education ed;
         ed = new Education();
@@ -75,12 +75,12 @@ public class Person extends Entity
         for(int i=2; i<newEducation.length; i++)
             ed.major.add(newEducation[i]);
         
-        this.fieldValuePair.put(this.fieldEducation, newEducation);
+        //this.fieldValuePair.put(this.fieldEducation, newEducation);
         
-        this.setEducation(ed);
+        this.addEducation(ed);
     }
     
-    public void setEducation(Education newEducation)
+    public void addEducation(Education newEducation)
     {
         if(newEducation != null)
             ((LinkedList<Education>)this.fieldValuePair.get(this.fieldEducation)).add(newEducation);
@@ -94,7 +94,7 @@ public class Person extends Entity
         } 
     }
     
-    public void setEmail(String newEmail)
+    public void addEmail(String newEmail)
     {
         if(newEmail.length()>1)
             ((LinkedList<String>)this.fieldValuePair.get(this.fieldEmail)).add(newEmail);
