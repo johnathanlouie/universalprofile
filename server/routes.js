@@ -40,109 +40,109 @@ function ensureArray(req)
 function getFbHandler(req, res)
 {
 	dao.findFb()
-	.then(function(data)
-	{
-		res.json(data);
-	})
-	.catch(function()
-	{
-		res.json({error: "get facebook failed"});
-	});
+		.then(function(data)
+		{
+			res.json(data);
+		})
+		.catch(function()
+		{
+			res.json({error: "get facebook failed"});
+		});
 }
 
 function postFbHandler(req, res)
 {
 	var data = ensureArray(req);
 	dao.insertFb(data)
-	.then(function()
-	{
-		res.json({status: "success"});
-	})
-	.catch(function()
-	{
-		res.json({error: "insert facebook failed"});
-	});
+		.then(function()
+		{
+			res.json({status: "insert facebook success"});
+		})
+		.catch(function()
+		{
+			res.json({error: "insert facebook failed"});
+		});
 }
 
 function getLiHandler(req, res)
 {
 	dao.findLi()
-	.then(function(data)
-	{
-		res.json(data);
-	})
-	.catch(function()
-	{
-		res.json({error: "get linkedin failed"});
-	});
+		.then(function(data)
+		{
+			res.json(data);
+		})
+		.catch(function()
+		{
+			res.json({error: "get linkedin failed"});
+		});
 }
 
 function postLiHandler(req, res)
 {
 	var data = ensureArray(req);
 	dao.insertLi(data)
-	.then(function()
-	{
-		res.json({status: "success"});
-	})
-	.catch(function()
-	{
-		res.json({error: "insert linkedin failed"});
-	});
+		.then(function()
+		{
+			res.json({status: "insert linkedin success"});
+		})
+		.catch(function()
+		{
+			res.json({error: "insert linkedin failed"});
+		});
 }
 
 function getGpHandler(req, res)
 {
 	dao.findGp()
-	.then(function(data)
-	{
-		res.json(data);
-	})
-	.catch(function()
-	{
-		res.json({error: "get google+ failed"});
-	});
+		.then(function(data)
+		{
+			res.json(data);
+		})
+		.catch(function()
+		{
+			res.json({error: "get google+ failed"});
+		});
 }
 
 function postGpHandler(req, res)
 {
 	var data = ensureArray(req);
 	dao.insertGp(data)
-	.then(function()
-	{
-		res.json({status: "success"});
-	})
-	.catch(function()
-	{
-		res.json({error: "insert google+ failed"});
-	});
+		.then(function()
+		{
+			res.json({status: "insert google+ success"});
+		})
+		.catch(function()
+		{
+			res.json({error: "insert google+ failed"});
+		});
 }
 
 function getCombinedHandler(req, res)
 {
 	dao.findFb()
-	.then(function(data)
-	{
-		res.json(data);
-	})
-	.catch(function()
-	{
-		res.json({error: "get combined failed"});
-	});
+		.then(function(data)
+		{
+			res.json(data);
+		})
+		.catch(function()
+		{
+			res.json({error: "get combined failed"});
+		});
 }
 
 function postCombinedHandler(req, res)
 {
 	var data = ensureArray(req);
 	dao.insertFb(data)
-	.then(function()
-	{
-		res.json({status: "success"});
-	})
-	.catch(function()
-	{
-		res.json({error: "insert combined failed"});
-	});
+		.then(function()
+		{
+			res.json({status: "insert combined success"});
+		})
+		.catch(function()
+		{
+			res.json({error: "insert combined failed"});
+		});
 }
 
 function missing(req, res, next)
@@ -153,7 +153,7 @@ function missing(req, res, next)
 function broke(err, req, res, next)
 {
 	console.error(err.stack);
-	res.status(500).send("Something broke!");
+	res.status(500).json({error: "something serverside broke!"});
 }
 
 function serverSuccess()

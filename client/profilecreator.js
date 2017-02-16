@@ -6,40 +6,40 @@ function manualCreate()
 	var sex = $("#gender").val();
 	var birth = new Birth($("#byr").val(), $("#bmnth").val(), $("#bday").val());
 	var addr1 = new Address(
-	$("#addrnum1").val(),
-	$("#stname1").val(),
-	$("#aptnum1").val(),
-	$("#city1").val(),
-	$("#state1").val(),
-	$("#zip1").val()
-	);
+		$("#addrnum1").val(),
+		$("#stname1").val(),
+		$("#aptnum1").val(),
+		$("#city1").val(),
+		$("#state1").val(),
+		$("#zip1").val()
+		);
 	var addr2 = new Address(
-	$("#addrnum2").val(),
-	$("#stname2").val(),
-	$("#aptnum2").val(),
-	$("#city2").val(),
-	$("#state2").val(),
-	$("#zip2").val()
-	);
+		$("#addrnum2").val(),
+		$("#stname2").val(),
+		$("#aptnum2").val(),
+		$("#city2").val(),
+		$("#state2").val(),
+		$("#zip2").val()
+		);
 	var address = [addr1, addr2];
 	var school1 = new School(
-	$("#school1").val(),
-	$("#gpa1").val(),
-	[$("#mjr11").val(), $("#mjr12").val()],
-	[$("#min11").val(), $("#min12").val()]
-	);
+		$("#school1").val(),
+		$("#gpa1").val(),
+		[$("#mjr11").val(), $("#mjr12").val()],
+		[$("#min11").val(), $("#min12").val()]
+		);
 	var school2 = new School(
-	$("#school2").val(),
-	$("#gpa2").val(),
-	[$("#mjr21").val(), $("#mjr21").val()],
-	[$("#min22").val(), $("#min22").val()]
-	);
+		$("#school2").val(),
+		$("#gpa2").val(),
+		[$("#mjr21").val(), $("#mjr21").val()],
+		[$("#min22").val(), $("#min22").val()]
+		);
 	var school3 = new School(
-	$("#school3").val(),
-	$("#gpa3").val(),
-	[$("#mjr31").val(), $("#mjr31").val()],
-	[$("#min32").val(), $("#min32").val()]
-	);
+		$("#school3").val(),
+		$("#gpa3").val(),
+		[$("#mjr31").val(), $("#mjr31").val()],
+		[$("#min32").val(), $("#min32").val()]
+		);
 	var education = [school1, school2, school3];
 	var profile = new Profile(name, sex, phone, email, address, birth, education);
 	cleanObject(profile);
@@ -91,23 +91,23 @@ function School(name, gpa, major, minor)
 
 // chance a user fills out a field
 var chance =
-{
-	firstName: 1,
-	middleName: 0.1,
-	lastName: 1,
-	birth: 0.7,
-	birthYear: 0.4,
-	address: 0.05
-};
+	{
+		firstName: 1,
+		middleName: 0.1,
+		lastName: 1,
+		birth: 0.7,
+		birthYear: 0.4,
+		address: 0.05
+	};
 
 // average number of phones, emails, schools, etc attended for users
 // from 0 to any positive real number
 var avgNum =
-{
-	email: 2,
-	phone: 1.2,
-	school: 1.3
-};
+	{
+		email: 2,
+		phone: 1.2,
+		school: 1.3
+	};
 
 function autoCreate()
 {
@@ -168,9 +168,9 @@ function AutoProfile(maleNames, femaleNames, lastNames, streetNames, city, state
 		}
 	}
 	var address =
-	[
-		thisOrEmpty(AutoAddress(streetNames, city, state), 0.4)
-	];
+		[
+			thisOrEmpty(AutoAddress(streetNames, city, state), 0.4)
+		];
 	var education = [];
 	for (let i = 0, max = 4; i < max; i++)
 	{
@@ -186,13 +186,13 @@ function AutoProfile(maleNames, femaleNames, lastNames, streetNames, city, state
 function AutoAddress(street, city, state)
 {
 	return new Address(
-	genStNum(),
-	pickRandom(street),
-	genAptNum(),
-	pickRandom(city),
-	pickRandom(state),
-	genZip()
-	);
+		genStNum(),
+		pickRandom(street),
+		genAptNum(),
+		pickRandom(city),
+		pickRandom(state),
+		genZip()
+		);
 }
 
 function genAptNum()
@@ -280,25 +280,25 @@ function AutoSchool(names, subjects)
 }
 
 var providers =
-[
-	"hotmail",
-	"live",
-	"gmail",
-	"yahoo",
-	"outlook",
-	"icloud"
-];
+	[
+		"hotmail",
+		"live",
+		"gmail",
+		"yahoo",
+		"outlook",
+		"icloud"
+	];
 
 var stTypes =
-[
-	"st",
-	"blvd",
-	"ave",
-	"rd",
-	"ln",
-	"ct",
-	"dr"
-];
+	[
+		"st",
+		"blvd",
+		"ave",
+		"rd",
+		"ln",
+		"ct",
+		"dr"
+	];
 
 function genStNum()
 {
@@ -479,6 +479,6 @@ function cleanArray(array)
 function send(data, db)
 {
 	$.post(`/profiles/${db}`, data, (res, status) => {
-		alert(`response: ${res}\nstatus: ${status}`);
+		alert(`response: ${res.error || res.status || res}\nstatus: ${status}`);
 	}, "json");
 }
