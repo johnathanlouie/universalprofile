@@ -119,8 +119,8 @@ public class CombinerTester
         combiner = new CombinerEngine(new SpecialPersonChecker());
         //Please change this path on your system as this is a specific path
         // Or else get ready to Crash .......... Burrrrrr 
-        f1= "/home/sashi/NetBeansProjects/Combiner/src/test/file.xml";
-        f2= "/home/sashi/NetBeansProjects/Combiner/src/test/file2.xml";
+        f1= "/home/sashi/NetBeansProjects/universalprofile/src/test/file.xml";
+        f2= "/home/sashi/NetBeansProjects/universalprofile/src/test/file2.xml";
         LinkedList c1 = xmlDocument(f2);
         LinkedList c2 = xmlDocument(f1);
         
