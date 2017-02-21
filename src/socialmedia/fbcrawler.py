@@ -1,7 +1,8 @@
 from ghost import Ghost, Session
 
-
-
+# FacebookCrawler class to crawl facebook page
+#   Currently supports crawling of User Profile About Page
+#    
 class FacebookCrawler(object):
     
     def __init__(self):
@@ -21,7 +22,7 @@ class FacebookCrawler(object):
 
           session.evaluate("""
                document.querySelector('input[name="email"]').value = 'sashi_thapaliya@hotmail.com';
-               document.querySelector('input[name="pass"]').value = 'Myname123$';
+               document.querySelector('input[name="pass"]').value = 'justpassword';
                """)
 
           session.evaluate("""document.querySelector('input[name="login"]').click();""",

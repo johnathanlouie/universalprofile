@@ -4,7 +4,9 @@ from bs4 import NavigableString
 from bs4 import Tag
 import re
 
-
+# FacebookProfileScrapper class that handles scrapping data out of Facebook User Profiles
+#   Currently support scrapping data from About page contact basic tab of User Profile
+#
 class FacebookProfileScrapper(object):
     
     def __init__(self):
@@ -50,6 +52,11 @@ class FacebookProfileScrapper(object):
             profile["birthdate"] = attr 
        return profile
 
+    #@return a profile from the profile page
+    # Profile is a Dictionary/associate array with attributes as keys and values as values
+    #
+    #@param profile_page needs to be a user profile About page with contact basic tab
+    #
     def scrapeAbout(self, profile_page):
         all_attr = []
         soup = BeautifulSoup(profile_page, 'html.parser')
@@ -66,6 +73,12 @@ class FacebookProfileScrapper(object):
               all_attr.append(sec.next.get_text())
         return self.profile(all_attr)
 
+
+    #@return list of profiles from the list of profile pages
+    # Each Profile is a Dictionary/associate array with attributes as keys and values as values
+    #
+    #@param profile_pages needs to be list of profile_pages
+    # 			Each profile page must be the About page with contact basic tab
     def scrapeAboutAll(self, profile_pages=[]):
        for pg in profile_pages:
           self.profiles.append(self.scrapeAbout(pg))
