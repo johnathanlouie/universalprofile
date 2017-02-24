@@ -47,24 +47,24 @@ public class JaroWinklerPersonChecker extends EntityChecker
         p2 = (Person)o2;
         jaro = new JaroWinkler();
         
-        cosVal = jaro.similarity(p1.getEmail(), p2.getEmail());
+        cosVal = jaro.similarity(p1.getEmail().toLowerCase(), p2.getEmail().toLowerCase());
         //System.out.println("cosVal email="+cosVal);
         if(cosVal>0.9) sim+=5+cosVal;
         
-        cosVal = jaro.similarity(p1.getFullName(), p2.getFullName());
+        cosVal = jaro.similarity(p1.getFullName().toLowerCase(), p2.getFullName().toLowerCase());
         if(cosVal>0.9) sim+=2+cosVal;
         
-        cosVal = jaro.similarity(p1.getCity(), p2.getCity());
+        cosVal = jaro.similarity(p1.getCity().toLowerCase(), p2.getCity().toLowerCase());
         if(cosVal>0.9) sim+=cosVal;
         
-        cosVal = jaro.similarity(p1.getCountry(), p2.getCountry());
+        cosVal = jaro.similarity(p1.getCountry().toLowerCase(), p2.getCountry().toLowerCase());
         if(cosVal>0.9) sim+=cosVal;
         
-        cosVal = jaro.similarity(p1.getState(), p2.getState());
+        cosVal = jaro.similarity(p1.getState().toLowerCase(), p2.getState().toLowerCase());
         if(cosVal>0.6) sim+=cosVal;
 
         
-        cosVal = jaro.similarity(p1.getEducation(),p2.getEducation());
+        cosVal = jaro.similarity(p1.getEducation().toLowerCase(),p2.getEducation().toLowerCase());
         if(cosVal>0.9) sim+=cosVal;
 
         cosVal = jaro.similarity(p1.getBirthDate(), p2.getBirthDate());

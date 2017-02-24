@@ -116,7 +116,7 @@ public class CombinerTester
     {
         CombinerEngine combiner;
         String f1,f2;
-        combiner = new CombinerEngine(new SpecialPersonChecker());
+        combiner = new CombinerEngine(new JaroWinklerPersonChecker());
         //Please change this path on your system as this is a specific path
         // Or else get ready to Crash .......... Burrrrrr 
         f1= "/home/sashi/NetBeansProjects/universalprofile/src/test/file.xml";

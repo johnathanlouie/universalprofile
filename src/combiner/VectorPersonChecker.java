@@ -47,23 +47,23 @@ public class VectorPersonChecker extends EntityChecker
         p2 = (Person)o2;
         cos = new Cosine(11);
         
-        cosVal = cos.similarity(p1.getEmail(), p2.getEmail());
+        cosVal = cos.similarity(p1.getEmail().toLowerCase(), p2.getEmail().toLowerCase());
         if(cosVal!=0.0) sim+=20.0+Math.log(cosVal);
         
-        cosVal = cos.similarity(p1.getFullName(), p2.getFullName());
+        cosVal = cos.similarity(p1.getFullName().toLowerCase(), p2.getFullName().toLowerCase());
         if(cosVal!=0.0) sim+=10.0+Math.log(cosVal);
         
-        cosVal = cos.similarity(p1.getCity(), p2.getCity());
+        cosVal = cos.similarity(p1.getCity().toLowerCase(), p2.getCity().toLowerCase());
         if(cosVal!=0.0) sim+=5.0+Math.log(cosVal);
         
-        cosVal = cos.similarity(p1.getCountry(), p2.getCountry());
+        cosVal = cos.similarity(p1.getCountry().toLowerCase(), p2.getCountry().toLowerCase());
         if(cosVal!=0.0) sim+=Math.log(cosVal);
         
-        cosVal = cos.similarity(p1.getState(), p2.getState());
+        cosVal = cos.similarity(p1.getState().toLowerCase(), p2.getState().toLowerCase());
         if(cosVal!=0.0) sim+=Math.log(cosVal);
         
         
-        cosVal = cos.similarity(p1.getEducation(), p2.getEducation());
+        cosVal = cos.similarity(p1.getEducation().toLowerCase(), p2.getEducation().toLowerCase());
         if(cosVal!=0.0) sim+=Math.log(cosVal);
         
         
