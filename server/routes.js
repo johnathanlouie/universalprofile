@@ -1,159 +1,108 @@
 var express = require("express");
 var app = express();
-var cfg = require("./config.js");
-var dao = require("./dao.js");
 
 var bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: false}));
+//app.use(bodyParser.json());
 
 app.use(express.static("client"));
 
-app.get("/", function(req, res)
-{
-	res.sendFile("profilegenerator.html", {root: "client"});
-});
-
-app.get("/profiles/facebook", getFbHandler);
-app.get("/profiles/linkedin", getLiHandler);
-app.get("/profiles/google", getGpHandler);
-app.get("/profiles/combined", getCombinedHandler);
-
-app.post("/profiles/facebook", postFbHandler);
-app.post("/profiles/linkedin", postLiHandler);
-app.post("/profiles/google", postGpHandler);
-app.post("/profiles/combined", postCombinedHandler);
+app.get("/profiles/:collectionName", getAllHandler);
+app.put("/profiles/:collectionName", insertHandler);
+app.post("/profiles/:collectionName", queryHandler);
 
 app.use(missing);
 app.use(broke);
 
-function ensureArray(req)
+var dao = require("./dao.js");
+
+function ensureArray(data)
 {
-	var data = req.body;
+	console.log("function ensureArray");
 	if (!Array.isArray(data))
 	{
+		console.log(" - data converted to array");
 		data = [data];
+	} else
+	{
+		console.log(" - data already array");
 	}
 	return data;
 }
 
-function getFbHandler(req, res)
-{
-	dao.findFb()
-		.then(function(data)
-		{
-			res.json(data);
-		})
-		.catch(function()
-		{
-			res.json({error: "get facebook failed"});
-		});
+function chBody(reqBody) {
+	console.log("function chBody");
+	var keys = Object.keys(reqBody);
+	var obj = keys[0];
+	obj = JSON.parse(obj);
+	return obj;
 }
 
-function postFbHandler(req, res)
+function getAllHandler(req, res)
 {
-	var data = ensureArray(req);
-	dao.insertFb(data)
-		.then(function()
-		{
-			res.json({status: "insert facebook success"});
-		})
-		.catch(function()
-		{
-			res.json({error: "insert facebook failed"});
-		});
+	console.log("function getAllHandler");
+	var collectionName = req.params.collectionName;
+	dao.getAll(collectionName)
+			.then(function (data)
+			{
+				console.log(" - handler success response");
+				res.json(data);
+			})
+			.catch(function ()
+			{
+				console.log(" - handler failure response");
+				res.json({status: `failure: get all from ${collectionName}`});
+			});
 }
 
-function getLiHandler(req, res)
+function insertHandler(req, res)
 {
-	dao.findLi()
-		.then(function(data)
-		{
-			res.json(data);
-		})
-		.catch(function()
-		{
-			res.json({error: "get linkedin failed"});
-		});
+	console.log("function insertHandler");
+	var collectionName = req.params.collectionName;
+	var data = req.body;
+	data = chBody(data);
+	data = ensureArray(data);
+	dao.insert(collectionName, data)
+			.then(function ()
+			{
+				console.log(" - handler success response");
+				res.json({status: `success: insert into ${collectionName}`});
+			})
+			.catch(function ()
+			{
+				console.log(" - handler failure response");
+				res.json({status: `failure: insert into ${collectionName}`});
+			});
 }
 
-function postLiHandler(req, res)
+function queryHandler(req, res)
 {
-	var data = ensureArray(req);
-	dao.insertLi(data)
-		.then(function()
-		{
-			res.json({status: "insert linkedin success"});
-		})
-		.catch(function()
-		{
-			res.json({error: "insert linkedin failed"});
-		});
-}
-
-function getGpHandler(req, res)
-{
-	dao.findGp()
-		.then(function(data)
-		{
-			res.json(data);
-		})
-		.catch(function()
-		{
-			res.json({error: "get google+ failed"});
-		});
-}
-
-function postGpHandler(req, res)
-{
-	var data = ensureArray(req);
-	dao.insertGp(data)
-		.then(function()
-		{
-			res.json({status: "insert google+ success"});
-		})
-		.catch(function()
-		{
-			res.json({error: "insert google+ failed"});
-		});
-}
-
-function getCombinedHandler(req, res)
-{
-	dao.findFb()
-		.then(function(data)
-		{
-			res.json(data);
-		})
-		.catch(function()
-		{
-			res.json({error: "get combined failed"});
-		});
-}
-
-function postCombinedHandler(req, res)
-{
-	var data = ensureArray(req);
-	dao.insertFb(data)
-		.then(function()
-		{
-			res.json({status: "insert combined success"});
-		})
-		.catch(function()
-		{
-			res.json({error: "insert combined failed"});
-		});
+	console.log("function queryHandler");
+	var collectionName = req.params.collectionName;
+	var data = req.body;
+	data = chBody(data);
+	dao.find(collectionName, data)
+			.then(function (results)
+			{
+				console.log(" - handler success response");
+				res.json(results);
+			})
+			.catch(function ()
+			{
+				console.log(" - handler failure response");
+				res.json({status: `failure: query ${collectionName}`});
+			});
 }
 
 function missing(req, res, next)
 {
-	res.status(404).json({error: "missing resource"});
+	res.status(404).json({status: "missing resource"});
 }
 
 function broke(err, req, res, next)
 {
 	console.error(err.stack);
-	res.status(500).json({error: "something serverside broke!"});
+	res.status(500).json({status: "something serverside broke!"});
 }
 
 function serverSuccess()
@@ -161,4 +110,5 @@ function serverSuccess()
 	console.log(`Server is listening on port ${cfg.server.port}!`);
 }
 
+var cfg = require("./config.js");
 app.listen(cfg.server.port, serverSuccess);

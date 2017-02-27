@@ -5,9 +5,11 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script src="classes.js"></script>
 		<link href="styles.css" rel="stylesheet">
 	</head>
 	<body>
+		<h1>Profile Generator</h1>
 		<h1>Male Names</h1>
 		<textarea id="male">James
 Jack
@@ -1676,10 +1678,11 @@ Transportation Science
 Urban and Regional Planning
 Urban Studies
 Visual Studies</textarea>
-		Number of Profiles<input id="profilenum" type="number" value="1000"><input type="button" value="Create Profiles" onclick="autoCreate();">
+		Number of Profiles<input id="profilenum" type="number" value="2"><input type="button" value="Create Profiles" onclick="autoCreate();">
 		<textarea id="test"></textarea>
-		<input placeholder="google, facebook, linkedin" name="src" id="src">
+		<input placeholder="google, facebook, linkedin" name="src" id="src" value="facebook">
 		<input type="button" onclick="insertDb();" value="Insert Database">
 		<script src="profilecreator.js"></script>
+		<script src="generator.js"></script>
 	</body>
 </html>
