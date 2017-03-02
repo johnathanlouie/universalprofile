@@ -12,7 +12,7 @@ npm start
 ```
 # Note For Linux
 * Need to change node to nodejs
-* Need to change (character) ~ to (character) '
+* Need to change (character) ` to (character) '
 
 # Running on Localhost
 * On your terminal enter -> npm start
