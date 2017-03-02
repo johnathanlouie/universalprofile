@@ -301,3 +301,12 @@ function textareaList(id)
 	}
 	return a;
 }
+
+function thisOrEmpty(value, chance)
+{
+	if (randomChance(chance))
+	{
+		return value;
+	}
+	return "";
+}

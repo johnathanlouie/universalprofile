@@ -103,15 +103,6 @@ function responseHandler(res, status) {
 	}
 }
 
-function thisOrEmpty(value, chance)
-{
-	if (randomChance(chance))
-	{
-		return value;
-	}
-	return "";
-}
-
 // returns true if object is not empty after cleaning
 function cleanObject(obj)
 {
