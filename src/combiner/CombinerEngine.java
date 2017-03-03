@@ -58,12 +58,14 @@ public class CombinerEngine
     
     public void setCollection(LinkedList<LinkedList<Entity>> newCollec)
     {
-        this.collection = newCollec;
+        if(newCollec != null)
+            this.collection = newCollec;
     }
     
      public void addCollection(LinkedList<Entity> newCollec)
     {
-        this.collection.add(newCollec);
+        if(newCollec != null)
+            this.collection.add(newCollec);
     }
    
     public LinkedList combineAll()
@@ -74,14 +76,22 @@ public class CombinerEngine
     public LinkedList combineAll(LinkedList<LinkedList<Entity>> newCollec)
     {
         LinkedList<Entity> curCol;
-        curCol = newCollec.get(0);
-        
-        //combine entities in different collections
-        for(int i=1; i<newCollec.size(); i++)
+        curCol = null;
+        try
         {
-            curCol = this.combine(curCol, newCollec.get(i));
+            curCol = newCollec.get(0);
+
+            //combine entities in different collections
+            for(int i=1; i<newCollec.size(); i++)
+            {
+                curCol = this.combine(curCol, newCollec.get(i));
+            }
+        }catch(IndexOutOfBoundsException ex)
+        {
+            //System.out.println(ex.toString());
+            System.out.println("Collection to be combined: "+newCollec.size());
+            System.out.println("No collection to combine");
         }
-        
         return curCol;
     }
      
