@@ -80,6 +80,10 @@ function cleanObject(obj)
 {
 	console.log(obj);
 	console.log("function cleanObject");
+	if (obj === null || obj === undefined)
+  	{
+		return false;
+	}
 	var props = Object.keys(obj);
 	for (let p of props)
 	{
