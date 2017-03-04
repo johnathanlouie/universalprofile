@@ -1,20 +1,15 @@
 
 package combiner;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+
 import entity.Person;
-import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Set;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -135,7 +130,7 @@ public class StartCombiner
                 {
                     JSONObject em = temp.getJSONObject(i);
                     
-                    /*em.
+                    /*em
                     Iterator itTmp = addJ.keys();
                     while(itTmp.hasNext())
                     {
@@ -228,7 +223,7 @@ public class StartCombiner
             
         }
               
-        /*StartCombiner sC = new StartCombiner();
+        StartCombiner sC = new StartCombiner();
         LinkedList com = sC.start("facebook", "googleplus");
         //LinkedList<Person> pL =  sC.retrieveProfiles("facebook");
         System.out.println(com.size());
@@ -236,6 +231,11 @@ public class StartCombiner
         {
             System.out.println(com.get(i));
         }
-        System.out.println(getJSON(com));*/
+        try {
+            Rest.insert("combined1", getJSON(com));
+        } catch (Exception ex) {
+            Logger.getLogger(StartCombiner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println(getJSON(com));
     }
 }
