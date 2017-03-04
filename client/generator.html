@@ -13,8 +13,31 @@
 		<a href="index.html">Query</a>
 		<a href="creator.html">Profile Creator</a>
 		<a href="generator.html">Profile Generator</a>
+		<a href="admin.html">Admin Page</a>
 		<hr>
 		<h1>Profile Generator</h1>
+		<table>
+			<tr>
+				<td>Number of Profiles</td>
+				<td><input id="profilenum" type="number" value="2"></td>
+			</tr>
+			<tr>
+				<td>Collection</td>
+				<td><input placeholder="combined1, combined2" name="src" id="src" value="facebook" required list="dbcollections"></td>
+			</tr>
+			<tr>
+				<td><input type="button" value="Create Profiles" onclick="insertDb2();"></td>
+			</tr>
+		</table>
+		<datalist id="dbcollections">
+			<option value="google">
+			<option value="facebook">
+			<option value="combined1">
+			<option value="combined2">
+			<option value="combined3">
+		</datalist>
+		<!--<textarea id="test"></textarea>-->
+		<!--<input type="button" onclick="insertDb();" value="Insert Database">-->
 		<h1>Male Names</h1>
 		<textarea id="male">James
 Jack
@@ -1683,10 +1706,6 @@ Transportation Science
 Urban and Regional Planning
 Urban Studies
 Visual Studies</textarea>
-		Number of Profiles<input id="profilenum" type="number" value="2"><input type="button" value="Create Profiles" onclick="autoCreate();">
-		<textarea id="test"></textarea>
-		<input placeholder="google, facebook, linkedin" name="src" id="src" value="facebook">
-		<input type="button" onclick="insertDb();" value="Insert Database">
 		<script src="creator.js"></script>
 		<script src="generator.js"></script>
 	</body>

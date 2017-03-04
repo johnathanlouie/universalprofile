@@ -1,22 +1,22 @@
 // chance a user fills out a field
 var chance =
-		{
-			firstName: 1,
-			middleName: 0.1,
-			lastName: 1,
-			birth: 0.7,
-			birthYear: 0.4,
-			address: 0.05
-		};
+	{
+		firstName: 1,
+		middleName: 0.1,
+		lastName: 1,
+		birth: 0.7,
+		birthYear: 0.4,
+		address: 0.05
+	};
 
 // average number of phones, emails, schools, etc attended for users
 // from 0 to any positive real number
 var avgNum =
-		{
-			email: 2,
-			phone: 1.2,
-			school: 1.3
-		};
+	{
+		email: 2,
+		phone: 1.2,
+		school: 1.3
+	};
 
 function autoCreate()
 {
@@ -36,7 +36,7 @@ function autoCreate()
 		profiles.push(AutoProfile(male, female, last, street, city, state, school, subject, words));
 	}
 	cleanArray(profiles);
-	$("#test").text(JSON.stringify(profiles));
+	return profiles;
 }
 
 function AutoProfile(maleNames, femaleNames, lastNames, streetNames, city, state, schoolNames, subject, words)
@@ -64,16 +64,17 @@ function AutoProfile(maleNames, femaleNames, lastNames, streetNames, city, state
 			if (randomChance(1 / 3))
 			{
 				email.push(genEmail1(name, birth));
-			} else
+			}
+			else
 			{
 				email.push(genEmail2(words));
 			}
 		}
 	}
 	var address =
-			[
-				thisOrEmpty(AutoAddress(streetNames, city, state), 0.4)
-			];
+		[
+			thisOrEmpty(AutoAddress(streetNames, city, state), 0.4)
+		];
 	var education = [];
 	for (let i = 0, max = 4; i < max; i++)
 	{
@@ -89,13 +90,13 @@ function AutoProfile(maleNames, femaleNames, lastNames, streetNames, city, state
 function AutoAddress(street, city, state)
 {
 	return new Address(
-			genStNum(),
-			pickRandom(street),
-			genAptNum(),
-			pickRandom(city),
-			pickRandom(state),
-			genZip()
-			);
+		genStNum(),
+		pickRandom(street),
+		genAptNum(),
+		pickRandom(city),
+		pickRandom(state),
+		genZip()
+		);
 }
 
 function genAptNum()
@@ -109,16 +110,20 @@ function genStDir()
 	if (rand < 0.125)
 	{
 		return "N";
-	} else if (rand < 0.25)
+	}
+	else if (rand < 0.25)
 	{
 		return "S";
-	} else if (rand < 0.375)
+	}
+	else if (rand < 0.375)
 	{
 		return "E";
-	} else if (rand < 0.5)
+	}
+	else if (rand < 0.5)
 	{
 		return "W";
-	} else
+	}
+	else
 	{
 		return "";
 	}
@@ -133,7 +138,8 @@ function AutoName(sex, male, female, last)
 	{
 		f = pickRandom(male);
 		m = thisOrEmpty(pickRandom(male), chance.middleName);
-	} else
+	}
+	else
 	{
 		f = pickRandom(female);
 		m = thisOrEmpty(pickRandom(female), chance.middleName);
@@ -178,25 +184,25 @@ function AutoSchool(names, subjects)
 }
 
 var providers =
-		[
-			"hotmail",
-			"live",
-			"gmail",
-			"yahoo",
-			"outlook",
-			"icloud"
-		];
+	[
+		"hotmail",
+		"live",
+		"gmail",
+		"yahoo",
+		"outlook",
+		"icloud"
+	];
 
 var stTypes =
-		[
-			"st",
-			"blvd",
-			"ave",
-			"rd",
-			"ln",
-			"ct",
-			"dr"
-		];
+	[
+		"st",
+		"blvd",
+		"ave",
+		"rd",
+		"ln",
+		"ct",
+		"dr"
+	];
 
 function genStNum()
 {
