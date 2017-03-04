@@ -12,6 +12,7 @@
 		<a href="index.html">Query</a>
 		<a href="creator.html">Profile Creator</a>
 		<a href="generator.html">Profile Generator</a>
+		<a href="admin.html">Admin Page</a>
 		<hr>
 		<div id="request">
 			<h1>Query</h1>
@@ -20,16 +21,16 @@
 				<input placeholder="middle name" name="mname" id="mname">
 				<input placeholder="last name" name="lname" id="lname">
 				<hr>
-				<input placeholder="phone 1" name="phone1" id="phone1">
-				<input placeholder="phone 2" name="phone2" id="phone2">
-				<input placeholder="phone 3" name="phone3" id="phone3">
-				<input placeholder="email 1" name="email1" id="email1">
+				<input placeholder="phone 1" name="phone1" id="phone1" type="tel">
+				<input placeholder="phone 2" name="phone2" id="phone2" type="tel">
+				<input placeholder="phone 3" name="phone3" id="phone3" type="tel">
+				<input placeholder="email 1" name="email1" id="email1" type="email">
 				<input placeholder="email 2" name="email2" id="email2">
 				<input placeholder="email 3" name="email3" id="email3">
-				<input placeholder="gender" name="gender" id="gender">
+				<input placeholder="sex" name="gender" id="gender">
 				<hr>
 				<input placeholder="birth year" name="byr" id="byr">
-				<input placeholder="birth month" name="bmnth" id="bmnth">
+				<input placeholder="birth month" name="bmnth" id="bmnth" type="number" min="1" max="12">
 				<input placeholder="birth day" name="bday" id="bday">
 				<hr>
 				<input placeholder="address number" name="addrnum1" id="addrnum1">
@@ -67,12 +68,19 @@
 				<input placeholder="minor 1" name="min31" id="min31">
 				<input placeholder="minor 2" name="min32" id="min32">
 				<hr>
-				<input type="button" onclick="manualCreate();" value="Create Query Object">
+				<input type="button" onclick="queryDb();" value="Create Query Object">
 				<input type="reset">
 			</form>
-			<textarea id="test"></textarea>
-			<input placeholder="combined1, combined2" name="src" id="src" value="facebook">
-			<input type="button" onclick="queryDb();" value="Query">
+			<!--<textarea id="test"></textarea>-->
+			<input placeholder="combined1, combined2" name="src" id="src" value="facebook" required list="dbcollections">
+			<datalist id="dbcollections">
+				<option value="google">
+				<option value="facebook">
+				<option value="combined1">
+				<option value="combined2">
+				<option value="combined3">
+			</datalist>
+			<!--<input type="button" onclick="queryDb();" value="Query">-->
 		</div>
 		<table id="results">
 			<tr>

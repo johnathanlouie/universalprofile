@@ -11,6 +11,7 @@
 		<a href="index.html">Query</a>
 		<a href="creator.html">Profile Creator</a>
 		<a href="generator.html">Profile Generator</a>
+		<a href="admin.html">Admin Page</a>
 		<hr>
 		<h1>Manual Profile</h1>
 		<form id="form">
@@ -24,7 +25,7 @@
 			<input placeholder="email 1" name="email1" id="email1">
 			<input placeholder="email 2" name="email2" id="email2">
 			<input placeholder="email 3" name="email3" id="email3">
-			<input placeholder="gender" name="gender" id="gender">
+			<input placeholder="sex" name="gender" id="gender">
 			<hr>
 			<input placeholder="birth year" name="byr" id="byr">
 			<input placeholder="birth month" name="bmnth" id="bmnth">
@@ -65,12 +66,26 @@
 			<input placeholder="minor 1" name="min31" id="min31">
 			<input placeholder="minor 2" name="min32" id="min32">
 			<hr>
-			<input type="button" onclick="manualCreate();" value="Create Profile">
 			<input type="reset">
 		</form>
-		<textarea id="test"></textarea>
-		<input placeholder="google, facebook, linkedin" name="src" id="src" value="facebook">
-		<input type="button" onclick="insertDb();" value="Insert Database">
+		<!--<textarea id="test"></textarea>-->
+		<table>
+			<tr>
+				<td>Collection</td>
+				<td><input placeholder="combined1, combined2" name="src" id="src" value="facebook" required list="dbcollections"></td>
+			</tr>
+			<tr>
+				<td><input type="button" onclick="insertDb();" value="Create Profile"></td>
+			</tr>
+		</table>
+		<datalist id="dbcollections">
+			<option value="google">
+			<option value="facebook">
+			<option value="combined1">
+			<option value="combined2">
+			<option value="combined3">
+		</datalist>
+		<!--<input type="button" onclick="insertDb();" value="Insert Database">-->
 		<!--
 		<input placeholder="" name="" id="">
 		<input placeholder="" name="" id="">

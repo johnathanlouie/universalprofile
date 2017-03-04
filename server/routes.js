@@ -23,14 +23,16 @@ function ensureArray(data)
 	{
 		console.log(" - data converted to array");
 		data = [data];
-	} else
+	}
+	else
 	{
 		console.log(" - data already array");
 	}
 	return data;
 }
 
-function chBody(reqBody) {
+function chBody(reqBody)
+{
 	console.log("function chBody");
 	var keys = Object.keys(reqBody);
 	var obj = keys[0];

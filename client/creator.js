@@ -6,99 +6,103 @@ function manualCreate()
 	var sex = $("#gender").val();
 	var birth = new Birth($("#byr").val(), $("#bmnth").val(), $("#bday").val());
 	var addr1 = new Address(
-			$("#addrnum1").val(),
-			$("#stname1").val(),
-			$("#aptnum1").val(),
-			$("#city1").val(),
-			$("#state1").val(),
-			$("#zip1").val()
-			);
+		$("#addrnum1").val(),
+		$("#stname1").val(),
+		$("#aptnum1").val(),
+		$("#city1").val(),
+		$("#state1").val(),
+		$("#zip1").val()
+		);
 	var addr2 = new Address(
-			$("#addrnum2").val(),
-			$("#stname2").val(),
-			$("#aptnum2").val(),
-			$("#city2").val(),
-			$("#state2").val(),
-			$("#zip2").val()
-			);
+		$("#addrnum2").val(),
+		$("#stname2").val(),
+		$("#aptnum2").val(),
+		$("#city2").val(),
+		$("#state2").val(),
+		$("#zip2").val()
+		);
 	var address = [addr1, addr2];
 	var school1 = new School(
-			$("#school1").val(),
-			$("#gpa1").val(),
-			[$("#mjr11").val(), $("#mjr12").val()],
-			[$("#min11").val(), $("#min12").val()]
-			);
+		$("#school1").val(),
+		$("#gpa1").val(),
+		[$("#mjr11").val(), $("#mjr12").val()],
+		[$("#min11").val(), $("#min12").val()]
+		);
 	var school2 = new School(
-			$("#school2").val(),
-			$("#gpa2").val(),
-			[$("#mjr21").val(), $("#mjr21").val()],
-			[$("#min22").val(), $("#min22").val()]
-			);
+		$("#school2").val(),
+		$("#gpa2").val(),
+		[$("#mjr21").val(), $("#mjr21").val()],
+		[$("#min22").val(), $("#min22").val()]
+		);
 	var school3 = new School(
-			$("#school3").val(),
-			$("#gpa3").val(),
-			[$("#mjr31").val(), $("#mjr31").val()],
-			[$("#min32").val(), $("#min32").val()]
-			);
+		$("#school3").val(),
+		$("#gpa3").val(),
+		[$("#mjr31").val(), $("#mjr31").val()],
+		[$("#min32").val(), $("#min32").val()]
+		);
 	var education = [school1, school2, school3];
 	var profile = new Profile(name, sex, phone, email, address, birth, education);
 	cleanObject(profile);
-	$("#test").text(JSON.stringify(profile));
+	return profile;
 }
 
-function insertDb()
+function responseHandler(res, status)
 {
-	var data = $("#test").text();
-//	data = JSON.parse(data);
-	var collectionName = $("#src").val();
-	var url = `/profiles/${collectionName}`;
-	$.ajax({
-		url: url,
-		type: "put",
-		success: responseHandler,
-		dataType: "json",
-		data: data
-	});
-//	$.post(url, data, responseHandler, "json");
-}
-
-function responseHandler(res, status) {
 	console.log(`server connection: ${status}`);
 	console.log(`request status: ${res.status}`);
 	console.log("response data", res);
-	if (Array.isArray(res)) {
-		for (let i of res) {
-			try {
+	if (Array.isArray(res))
+	{
+		for (let i of res)
+		{
+			try
+			{
 				var lastName = i.name.last;
 				lastName = lastName || "";
-			} catch (e) {
+			}
+			catch (e)
+			{
 				lastName = "";
 			}
-			try {
+			try
+			{
 				var firstName = i.name.first;
 				firstName = firstName || "";
-			} catch (e) {
+			}
+			catch (e)
+			{
 				firstName = "";
 			}
-			try {
+			try
+			{
 				var middleName = i.name.middle;
 				middleName = middleName || "";
-			} catch (e) {
+			}
+			catch (e)
+			{
 				middleName = "";
 			}
-			try {
+			try
+			{
 				var phone = i.phone[0];
-			} catch (e) {
+			}
+			catch (e)
+			{
 				phone = "";
 			}
-			try {
+			try
+			{
 				var email = i.email[0];
-			} catch (e) {
+			}
+			catch (e)
+			{
 				email = "";
 			}
 			$("#results").append(`<tr><td>${firstName}</td><td>${middleName}</td><td>${lastName}</td><td>${phone}</td><td>${email}</td></tr>`);
 		}
-	} else {
+	}
+	else
+	{
 		console.log("response not array");
 	}
 }
@@ -116,13 +120,15 @@ function cleanObject(obj)
 			{
 				delete obj[p];
 			}
-		} else if (Array.isArray(obj[p]))
+		}
+		else if (Array.isArray(obj[p]))
 		{
 			if (!cleanArray(obj[p]))
 			{
 				delete obj[p];
 			}
-		} else
+		}
+		else
 		{
 			if (!cleanObject(obj[p]))
 			{
@@ -145,13 +151,15 @@ function cleanArray(array)
 			{
 				array.splice(i, 1);
 			}
-		} else if (Array.isArray(array[i]))
+		}
+		else if (Array.isArray(array[i]))
 		{
 			if (!cleanArray(array[i]))
 			{
 				array.splice(i, 1);
 			}
-		} else
+		}
+		else
 		{
 			if (!cleanObject(array[i]))
 			{
@@ -162,9 +170,45 @@ function cleanArray(array)
 	return array.length > 0;
 }
 
+function testManual()
+{
+	var json = JSON.stringify(manualCreate());
+	$("#test").text(json);
+}
+
 function queryDb()
 {
-	var data = $("#test").text();
+//	var data = $("#test").text();
+	var data = JSON.stringify(manualCreate());
 	var collectionName = $("#src").val();
 	$.post(`/profiles/${collectionName}`, data, responseHandler, "json");
+}
+
+function insertDb()
+{
+//	var data = $("#test").text();
+	var data = JSON.stringify(manualCreate());
+	var collectionName = $("#src").val();
+	var url = `/profiles/${collectionName}`;
+	$.ajax({
+		url: url,
+		type: "put",
+		success: responseHandler,
+		dataType: "json",
+		data: data
+	});
+}
+
+function insertDb2()
+{
+	var data = JSON.stringify(autoCreate());
+	var collectionName = $("#src").val();
+	var url = `/profiles/${collectionName}`;
+	$.ajax({
+		url: url,
+		type: "put",
+		success: responseHandler,
+		dataType: "json",
+		data: data
+	});
 }
