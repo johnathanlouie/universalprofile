@@ -1,20 +1,11 @@
 
 package combiner;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import entity.Person;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -214,10 +205,10 @@ public class StartCombiner
     
     public static void main(String[]args)
     {
-        if(args.length>3)
+        if(args.length==2)
         { 
             StartCombiner sC = new StartCombiner();
-            LinkedList com = sC.start(args[2], args[3]);
+            LinkedList com = sC.start(args[0], args[1]);
             
             try {
                 //make db entry
