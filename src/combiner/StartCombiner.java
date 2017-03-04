@@ -217,13 +217,18 @@ public class StartCombiner
         if(args.length>3)
         { 
             StartCombiner sC = new StartCombiner();
-            //LinkedList com = sC.start(args[2], args[3]);
+            LinkedList com = sC.start(args[2], args[3]);
             
-            //make db entry
+            try {
+                //make db entry
+                Rest.insert("combined1", getJSON(com));
+            } catch (Exception ex) {
+                Logger.getLogger(StartCombiner.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
         }
               
-        StartCombiner sC = new StartCombiner();
+        /*StartCombiner sC = new StartCombiner();
         LinkedList com = sC.start("facebook", "googleplus");
         //LinkedList<Person> pL =  sC.retrieveProfiles("facebook");
         System.out.println(com.size());
@@ -231,6 +236,6 @@ public class StartCombiner
         {
             System.out.println(com.get(i));
         }
-        System.out.println(getJSON(com));
+        System.out.println(getJSON(com));*/
     }
 }
