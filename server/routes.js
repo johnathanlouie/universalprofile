@@ -1,3 +1,5 @@
+/* global __dirname */
+
 var express = require("express");
 var app = express();
 
@@ -97,8 +99,21 @@ function queryHandler(req, res)
 	dao.find(collectionName, data).then(handlerSuccess).catch(handlerFail);
 }
 const exec = require('child_process').spawn;
+const path = require('path');
 function runCombinerHandler(req, res)
 {
+	function execResults(error, stdout, stderr)
+	{
+		if (error)
+		{
+			console.error(`exec error: ${error}`);
+			return;
+		}
+		console.log(`stdout: ${stdout}`);
+		console.log(`stderr: ${stderr}`);
+		console.log("exec finished");
+		res.json({status: "success: finished combining"});
+	}
 	console.log("function runCombinerHandler");
 	var data = req.body;
 	data = chBody(data);
@@ -107,22 +122,25 @@ function runCombinerHandler(req, res)
 	{
 		var col1 = data[0];
 		var col2 = data[1];
+		var cwd = path.normalize(`${__dirname}/../build`);
 		var options = {};
-		options.cwd = `${__dirname}/../build/`;
-		console.log(`cwd ${options.cwd}`);
+		options.cwd = cwd;
+		console.log(`cwd ${cwd}`);
+		var child = exec('java', ['combiner.StartCombiner', 'col1', "col2"], options);
 		var cmd = `java combiner.StartCombiner ${col1} ${col2}`;
+//		var cmd = "notepad";
 		console.log(`cmd ${cmd}`);
-		exec(cmd, (error, stdout, stderr) => {
-			if (error)
+		function ran(exitCode)
+		{
+			if (exitCode !== 0)
 			{
-				console.error(`exec error: ${error}`);
-				return;
+				console.log('combiner nonzero exit code');
+				res.json({status: "failure: combiner nonzero exit code"});
 			}
-			console.log(`stdout: ${stdout}`);
-			console.log(`stderr: ${stderr}`);
-			console.log("exec finished");
-			res.json({status: "success: finished combining"});
-		});
+			res.json({status: "success: combiner zero exit code"});
+		}
+		child.on('close', ran);
+//		exec(cmd, options, execResults);
 	}
 	else
 	{
