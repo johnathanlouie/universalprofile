@@ -22,6 +22,7 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.sun.deploy.util.StringUtils;
+import entity.Education;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -124,6 +125,48 @@ public class GooglePlusExtractor {
         return documentsToInsert;
     }
 
+    private static List<BasicDBObject> getHardcodedIdProfiles() throws IOException {
+        List<BasicDBObject> documentsToInsert = new ArrayList<>();
+        documentsToInsert.add(getProfileById("117862007149936554018"));
+        documentsToInsert.add(getProfileById("109116848218380695048"));
+        documentsToInsert.add(getProfileById("100371831234606833066"));
+        documentsToInsert.add(getProfileById("118311014595020491993"));
+        documentsToInsert.add(getProfileById("114950978560072080765"));
+        documentsToInsert.add(getProfileById("100110992705034515071"));
+        documentsToInsert.add(getProfileById("101328142155738019653"));
+        documentsToInsert.add(getProfileById("111600273142869149167"));
+        documentsToInsert.add(getProfileById("113075362423639773428"));
+        documentsToInsert.add(getProfileById("101503259830535887138"));
+        return documentsToInsert;
+    }
+
+    private static BasicDBObject getProfileById(String id) {
+        try {
+            Person profile = plus.people().get(id).execute(); //plus.people().search("Mark").execute() *test id - 117862007149936554018*
+            if(profile != null){
+                List<Person.Organizations> personOrganizations = profile.getOrganizations();
+                StringBuilder org = new StringBuilder();
+
+                if(personOrganizations != null && personOrganizations.size() > 0){
+                    for(Person.Organizations organization : personOrganizations){
+                        org.append(organization.getName() + ", ");
+                    }
+                }
+
+                BasicDBObject person = new BasicDBObject("gender", profile.getGender())
+                        .append("birthdate", profile.getBirthday())
+                        .append("full_name", profile.getDisplayName())
+                        .append("email", profile.getEmails() != null ? profile.getEmails().toString() : null)
+                        .append("personId", profile.getId())
+                        .append("organizations", org.toString());
+                return person;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static List<entity.Person> getGooglePlusUserByName(String fullName){
         initializeSearch();
         List<entity.Person> persons = new ArrayList<>();
@@ -143,6 +186,7 @@ public class GooglePlusExtractor {
     private static entity.Person convertGooglePersonToPersonEntity(Person person){
         entity.Person entityPerson = new entity.Person();
         LinkedList<String> emails = new LinkedList<>();
+        LinkedList<Education> educations = new LinkedList<>();
         if(person.getName() != null){
             entityPerson.setFirstName(person.getName().getGivenName());
             entityPerson.setLastName(person.getName().getFamilyName());
@@ -155,6 +199,14 @@ public class GooglePlusExtractor {
         }
         entityPerson.setEmail(emails);
         entityPerson.setBirthDate(person.getBirthday() != null ? person.getBirthday() : "");
+
+        for(Person.Organizations organization : person.getOrganizations()){
+            Education edu = new Education();
+            edu.setSchool(organization.getName());
+            educations.add(edu);
+        }
+
+        entityPerson.setEducation(educations);
         return entityPerson;
     }
 
@@ -165,12 +217,11 @@ public class GooglePlusExtractor {
         ServerAddress adr = new ServerAddress("ds115870.mlab.com", 15870);
         MongoClient mongoClient = new MongoClient(adr, Arrays.asList(mongoCredential));
         MongoDatabase database = mongoClient.getDatabase("universalprofile");
-        MongoCollection collection = database.getCollection("GProfiles");
+        MongoCollection<BasicDBObject> collection = database.getCollection("GProfiles", BasicDBObject.class);
         initializeSearch();
-        List<entity.Person> p = getGooglePlusUserByName("Sashi Thapaliya");
 
         try {
-            collection.insertMany(getProfiles());
+            collection.insertMany(getHardcodedIdProfiles());
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
