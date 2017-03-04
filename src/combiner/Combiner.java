@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import combiner.CombinerEngine;
+import entity.Entity;
 /**
  *
  * @author sashi
@@ -21,9 +22,9 @@ public class Combiner
         this.ce = new CombinerEngine(new SpecialPersonChecker());
     }
     
-    public LinkedList<Person> getFacebookProfiles(String fullName)
+    public LinkedList getFacebookProfiles(String fullName)
     {
-        LinkedList<Person> fbProfiles = null;
+        LinkedList fbProfiles = null;
         try {
             //start process
             Process myProcess = Runtime.getRuntime().exec(
@@ -42,38 +43,58 @@ public class Combiner
         return fbProfiles;
     }
     
-    public LinkedList<Person> getGooglePlusProfiles(String fullName)
+    public LinkedList getGooglePlusProfiles(String fullName)
     {
+        LinkedList gProfiles=null;
+        gProfiles = PersonReader.xmlDocument("/home/sashi/NetBeansProjects/universalprofile/src/test/file.xml");
+        return gProfiles;
+    }
+    
+    public void retrieveProfiles(LinkedList<LinkedList> collection, String query)
+    {
+        LinkedList fb,gP;
+        fb = this.getFacebookProfiles(query);
+        gP = this.getGooglePlusProfiles(query);
+        if(fb!=null && fb.size()>0)
+            collection.add(fb);
+        if(gP!=null && gP.size()>0)
+            collection.add(gP);
         
-        return null;
     }
     
-    public void retrieveProfiles(LinkedList<LinkedList<Person>> collection, String query)
+    public LinkedList<Person> combine(LinkedList<LinkedList> collection)
     {
-    
-    
-    }
-    
-    public LinkedList<Person> combine(LinkedList<LinkedList<Person>> collection)
-    {
-        this.ce.setCollection(collection);
+        for(int i=0; i<collection.size(); i++)
+        {
+            this.ce.addCollection(collection.get(i));
+        }
         return this.ce.combineAll();
-        
     }
     
-    public void start(String query)
+    public LinkedList start(String query)
     {
-        LinkedList<LinkedList<Person>> collec;
+        LinkedList<LinkedList> collec;
         LinkedList<Person> combined;
         collec= new LinkedList();
         this.retrieveProfiles(collec, query);
         combined = this.combine(collec);
         //store in the database 
         // 
+        
+        return combined;
     }
+    
+    
+    
     public static void main(String[]args)
     {
         Combiner combiner = new Combiner();
+        LinkedList cmb = combiner.start("Sashi Thapaliya");
+        for(int i=0; i<cmb.size(); i++)
+        {
+            System.out.println((Person)cmb.get(i));
+        }
+        System.exit(1);
         if(args.length>3)
         {
         

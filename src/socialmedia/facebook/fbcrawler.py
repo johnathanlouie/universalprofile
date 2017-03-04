@@ -54,8 +54,8 @@ class FacebookCrawler(object):
        page, rs = session.open("https://m.facebook.com/login.php")
        assert page.http_status == 200
        session.evaluate("""
-               document.querySelector('input[name="email"]').value = 'thesashi7@gmail.com';
-               document.querySelector('input[name="pass"]').value = 'justpassword123';
+               document.querySelector('input[name="email"]').value = 'sashi_thapaliya@hotmail.com';
+               document.querySelector('input[name="pass"]').value = 'justpassword';
                """)
 
        session.evaluate("""document.querySelector('input[name="login"]').click();""",
