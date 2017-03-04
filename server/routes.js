@@ -10,6 +10,7 @@ app.use(express.static("client"));
 app.get("/profiles/:collectionName", getAllHandler);
 app.put("/profiles/:collectionName", insertHandler);
 app.post("/profiles/:collectionName", queryHandler);
+app.post("/combiner/run", runCombinerHandler);
 
 app.use(missing);
 app.use(broke);
@@ -94,6 +95,39 @@ function queryHandler(req, res)
 	var data = req.body;
 	data = chBody(data);
 	dao.find(collectionName, data).then(handlerSuccess).catch(handlerFail);
+}
+const exec = require('child_process').spawn;
+function runCombinerHandler(req, res)
+{
+	console.log("function runCombinerHandler");
+	var data = req.body;
+	data = chBody(data);
+	data = ensureArray(data);
+	if (data.length === 2)
+	{
+		var col1 = data[0];
+		var col2 = data[1];
+		var options = {};
+		options.cwd = `${__dirname}/../build/`;
+		console.log(`cwd ${options.cwd}`);
+		var cmd = `java combiner.StartCombiner ${col1} ${col2}`;
+		console.log(`cmd ${cmd}`);
+		exec(cmd, (error, stdout, stderr) => {
+			if (error)
+			{
+				console.error(`exec error: ${error}`);
+				return;
+			}
+			console.log(`stdout: ${stdout}`);
+			console.log(`stderr: ${stderr}`);
+			console.log("exec finished");
+			res.json({status: "success: finished combining"});
+		});
+	}
+	else
+	{
+		res.json({status: "failure: wrong number of collections"});
+	}
 }
 
 function missing(req, res, next)
