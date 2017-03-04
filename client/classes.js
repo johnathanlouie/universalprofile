@@ -3,7 +3,7 @@ function Profile(name, sex, phone, email, address, birth, education)
 	this.name = name;
 //	this.sex = sex;
 //	this.phone = phone;
-//	this.email = email;
+	this.email = email;
 	this.address = address;
 //	this.birth = birth;
 //	this.education = education;
