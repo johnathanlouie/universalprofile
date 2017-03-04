@@ -1,44 +1,30 @@
 function manualCreate()
 {
-	var name = new Name($("#fname").val(), $("#mname").val(), $("#lname").val());
+	var name = $("#fname").val() + " " + $("#mname").val() + " " + $("#lname").val();
 	var phone = [$("#phone1").val(), $("#phone2").val(), $("#phone3").val()];
 	var email = [$("#email1").val(), $("#email2").val(), $("#email3").val()];
 	var sex = $("#gender").val();
-	var birth = new Birth($("#byr").val(), $("#bmnth").val(), $("#bday").val());
+	var birth = $("#byr").val() + "/" + $("#bmnth").val() + "/" + $("#bday").val();
 	var addr1 = new Address(
-		$("#addrnum1").val(),
-		$("#stname1").val(),
-		$("#aptnum1").val(),
 		$("#city1").val(),
 		$("#state1").val(),
-		$("#zip1").val()
+		$("#country1").val()
 		);
-	var addr2 = new Address(
-		$("#addrnum2").val(),
-		$("#stname2").val(),
-		$("#aptnum2").val(),
-		$("#city2").val(),
-		$("#state2").val(),
-		$("#zip2").val()
-		);
-	var address = [addr1, addr2];
+	var address = addr1;
 	var school1 = new School(
 		$("#school1").val(),
 		$("#gpa1").val(),
-		[$("#mjr11").val(), $("#mjr12").val()],
-		[$("#min11").val(), $("#min12").val()]
+		[$("#mjr11").val(), $("#mjr12").val()]
 		);
 	var school2 = new School(
 		$("#school2").val(),
 		$("#gpa2").val(),
-		[$("#mjr21").val(), $("#mjr21").val()],
-		[$("#min22").val(), $("#min22").val()]
+		[$("#mjr21").val(), $("#mjr21").val()]
 		);
 	var school3 = new School(
 		$("#school3").val(),
 		$("#gpa3").val(),
-		[$("#mjr31").val(), $("#mjr31").val()],
-		[$("#min32").val(), $("#min32").val()]
+		[$("#mjr31").val(), $("#mjr31").val()]
 		);
 	var education = [school1, school2, school3];
 	var profile = new Profile(name, sex, phone, email, address, birth, education);
@@ -57,30 +43,12 @@ function responseHandler(res, status)
 		{
 			try
 			{
-				var lastName = i.name.last;
-				lastName = lastName || "";
+				var fullName = i.name;
+
 			}
 			catch (e)
 			{
-				lastName = "";
-			}
-			try
-			{
-				var firstName = i.name.first;
-				firstName = firstName || "";
-			}
-			catch (e)
-			{
-				firstName = "";
-			}
-			try
-			{
-				var middleName = i.name.middle;
-				middleName = middleName || "";
-			}
-			catch (e)
-			{
-				middleName = "";
+				fullName = "";
 			}
 			try
 			{
@@ -98,7 +66,7 @@ function responseHandler(res, status)
 			{
 				email = "";
 			}
-			$("#results").append(`<tr><td>${firstName}</td><td>${middleName}</td><td>${lastName}</td><td>${phone}</td><td>${email}</td></tr>`);
+			$("#results").append(`<tr><td>${fullName}</td><td>${phone}</td><td>${email}</td></tr>`);
 		}
 	}
 	else
