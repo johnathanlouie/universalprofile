@@ -53,16 +53,19 @@ root = ET.Element("Profiles")
 #write profile to an xml Person Format
 for prof in profiles:
   doc = ET.SubElement(root, "Profile")
-  full_name =  prof["full_name"].split(" ")
   fne = ET.SubElement(doc, "FirstName")
   lne = ET.SubElement(doc, "LastName")
   em = ET.SubElement(doc, "Emails")
   eme = ET.SubElement(em,"Email")
   ge = ET.SubElement(doc,"Gender")
-  fne.text = full_name[0]
-  lne.text = full_name[1]
-  eme.text = prof["email"]
-  ge.text = prof["gender"]
+  if "full_name" in prof:
+    full_name =  prof["full_name"].split(" ")
+    fne.text = full_name[0]
+    lne.text = full_name[1]
+  if "email" in prof:
+    eme.text = prof["email"]
+  if "gender" in prof:
+    ge.text = prof["gender"]
 
 tree = ET.ElementTree(root)
 tree.write("profiles.xml")
