@@ -1,16 +1,17 @@
 function manualCreate()
 {
-	var name = $("#fname").val() + " " + $("#mname").val() + " " + $("#lname").val();
+	console.log("function manualCreate");
+	var name = new Name($("#fname").val(), $("#lname").val());//`${} ${$("#mname").val()} ${}`;
 	var phone = [$("#phone1").val(), $("#phone2").val(), $("#phone3").val()];
 	var email = [$("#email1").val(), $("#email2").val(), $("#email3").val()];
 	var sex = $("#gender").val();
 	var birth = $("#byr").val() + "/" + $("#bmnth").val() + "/" + $("#bday").val();
 	var addr1 = new Address(
 		$("#city1").val(),
-		$("#state1").val(),
-		$("#country1").val()
+		$("#state1").val()
+//		$("#country1").val()
 		);
-	var address = addr1;
+	var address = [addr1];
 	var school1 = new School(
 		$("#school1").val(),
 		$("#gpa1").val(),
@@ -44,7 +45,6 @@ function responseHandler(res, status)
 			try
 			{
 				var fullName = i.name;
-
 			}
 			catch (e)
 			{
@@ -78,6 +78,8 @@ function responseHandler(res, status)
 // returns true if object is not empty after cleaning
 function cleanObject(obj)
 {
+	console.log(obj);
+	console.log("function cleanObject");
 	var props = Object.keys(obj);
 	for (let p of props)
 	{
@@ -98,6 +100,7 @@ function cleanObject(obj)
 		}
 		else
 		{
+			console.log(p);
 			if (!cleanObject(obj[p]))
 			{
 				delete obj[p];
