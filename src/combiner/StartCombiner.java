@@ -126,19 +126,14 @@ public class StartCombiner
             else if(curK.equals("email"))
             {
                 JSONArray temp = (JSONArray)obj.get("email");
-                for(int i=0; i<temp.length(); i++)
+                Iterator itTemp = temp.iterator();
+                while(itTemp.hasNext())
                 {
-                    JSONObject em = temp.getJSONObject(i);
-                    email = (String)em.get("email"+Integer.toString(i));
+                    email = (String)itTemp.next();
+                    System.out.println(email);
                     p.addEmail(email);
-                    /*em
-                    Iterator itTmp = addJ.keys();
-                    while(itTmp.hasNext())
-                    {
-                        
-
-                    }*/
                 }
+                
             }
         }
         
@@ -210,14 +205,9 @@ public class StartCombiner
                 for(int j=0; j<str.length; j++)
                 {
                     if(j>0) json.append(",");
-                    json.append("{");
-                    json.append("\"email");
-                    json.append(Integer.toString(i));
-                    json.append("\":");
                     json.append("\"");
                     json.append(str[i]);
                     json.append("\"");
-                    json.append("}");
                 }
                 json.append("]");
             }
@@ -249,7 +239,7 @@ public class StartCombiner
             String data = "[{"
                     + "\"name\":{\"first\":\"Sashi\",\"last\":\"Thapaliya\"},"
                     + "\"address\":[{\"city\":\"El Cerrito\",\"state\":\"CA\"}],"
-                    + "\"email\":[{\"email0\":\"email@email.com\"}]}]";
+                    + "\"email\":[\"email@email.com\"]}]";
             System.out.println(data);
             //Rest.insert("test",data);
             //System.out.println(json);
