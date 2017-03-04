@@ -126,7 +126,7 @@ function runCombinerHandler(req, res)
 		var options = {};
 		options.cwd = cwd;
 		console.log(`cwd ${cwd}`);
-		var child = exec('java', ['combiner.StartCombiner', 'col1', "col2"], options);
+		var child = exec('java', ['combiner.StartCombiner', col1, col2], options);
 		var cmd = `java combiner.StartCombiner ${col1} ${col2}`;
 //		var cmd = "notepad";
 		console.log(`cmd ${cmd}`);
