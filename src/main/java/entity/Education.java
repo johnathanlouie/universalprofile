@@ -1,30 +1,26 @@
-
 package entity;
 
 import java.util.LinkedList;
 
 /**
- *  Class Education represents education of a Person.
- * 
+ * Class Education represents education of a Person.
+ *
  * @author sashi
  */
-public class Education
-{
+public class Education {
+
     double gpa;
     String school;
     LinkedList<String> major;
     String level;
-    
-    public Education()
-    {
+
+    public Education() {
         this.gpa = 0.0;
         this.major = new LinkedList();
     }
-    
-    
+
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder str;
         str = new StringBuilder();
         str.append(this.school);
@@ -32,23 +28,24 @@ public class Education
         str.append(Double.toString(this.gpa));
         str.append(" ");
         str.append(this.level);
-        for(int i=0; i<this.major.size(); i++)
-        {
+        for (int i = 0; i < this.major.size(); i++) {
             str.append(" ");
             str.append(this.major.get(i));
         }
         return str.toString();
     }
-    
-    public boolean equals(Education ed)
-    {
+
+    public boolean equals(Education ed) {
         boolean isEqual;
         isEqual = true;
-        
-        if(ed.gpa!=this.gpa || !ed.level.equals(this.level) || !ed.school.equals(this.school) || !ed.major.equals(this.major))
-        {
+
+        if (ed.gpa != this.gpa || !ed.level.equals(this.level) || !ed.school.equals(this.school) || !ed.major.equals(this.major)) {
             isEqual = false;
         }
         return isEqual;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
     }
 }

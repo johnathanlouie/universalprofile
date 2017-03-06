@@ -1,13 +1,6 @@
 
 package combiner;
 
-<<<<<<< HEAD
-import entity.Person;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-=======
 
 import entity.Person;
 
@@ -17,7 +10,6 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
->>>>>>> origin/master
 import org.json.JSONArray;
 import org.json.JSONObject;
 
