@@ -9,43 +9,55 @@ import java.util.LinkedList;
  */
 public class Education {
 
-    double gpa;
-    String school;
-    LinkedList<String> major;
-    String level;
+	private double gpa;
+	private String school;
+	private LinkedList<String> majors;
+	private String level;
 
-    public Education() {
-        this.gpa = 0.0;
-        this.major = new LinkedList();
-    }
+	public Education() {
+		this.gpa = 0.0;
+		this.majors = new LinkedList();
+	}
 
-    @Override
-    public String toString() {
-        StringBuilder str;
-        str = new StringBuilder();
-        str.append(this.school);
-        str.append(" ");
-        str.append(Double.toString(this.gpa));
-        str.append(" ");
-        str.append(this.level);
-        for (int i = 0; i < this.major.size(); i++) {
-            str.append(" ");
-            str.append(this.major.get(i));
-        }
-        return str.toString();
-    }
+	@Override
+	public String toString() {
+		StringBuilder str;
+		str = new StringBuilder();
+		str.append(this.school);
+		str.append(" ");
+		str.append(Double.toString(this.gpa));
+		str.append(" ");
+		str.append(this.level);
+		for (int i = 0; i < this.majors.size(); i++) {
+			str.append(" ");
+			str.append(this.majors.get(i));
+		}
+		return str.toString();
+	}
 
-    public boolean equals(Education ed) {
-        boolean isEqual;
-        isEqual = true;
+	public boolean equals(Education ed) {
+		boolean isEqual;
+		isEqual = true;
 
-        if (ed.gpa != this.gpa || !ed.level.equals(this.level) || !ed.school.equals(this.school) || !ed.major.equals(this.major)) {
-            isEqual = false;
-        }
-        return isEqual;
-    }
+		if (ed.gpa != this.gpa || !ed.level.equals(this.level) || !ed.school.equals(this.school) || !ed.majors.equals(this.majors)) {
+			isEqual = false;
+		}
+		return isEqual;
+	}
 
-    public void setSchool(String school) {
-        this.school = school;
-    }
+	public void setSchool(String school) {
+		this.school = school;
+	}
+
+	public void setGpa(double gpa) {
+		this.gpa = gpa;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
+	public void addMajor(String major) {
+		majors.add(major);
+	}
 }
