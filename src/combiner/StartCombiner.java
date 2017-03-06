@@ -1,11 +1,23 @@
 
 package combiner;
 
+<<<<<<< HEAD
 import entity.Person;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+=======
+
+import entity.Person;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+>>>>>>> origin/master
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -122,25 +134,21 @@ public class StartCombiner
             else if(curK.equals("email"))
             {
                 JSONArray temp = (JSONArray)obj.get("email");
-                for(int i=0; i<temp.length(); i++)
+                Iterator itTemp = temp.iterator();
+                while(itTemp.hasNext())
                 {
-                    JSONObject em = temp.getJSONObject(i);
-                    
-                    /*em.
-                    Iterator itTmp = addJ.keys();
-                    while(itTmp.hasNext())
-                    {
-                        
-
-                    }*/
+                    email = (String)itTemp.next();
+                    System.out.println(email);
+                    p.addEmail(email);
                 }
+                
             }
         }
         
         p.setFirstName(first);
         p.setLastName(last);
-        p.addEmail(email);
         p.setCity(city);
+        p.setState(state);
         return p;
     }
     
@@ -162,6 +170,7 @@ public class StartCombiner
     public static String getJSON(LinkedList<Person> list)
     {
         StringBuilder json= new StringBuilder();
+        String[] str = null;
         json.append("[");
         for(int i=0; i<list.size(); i++)
         {
@@ -196,6 +205,20 @@ public class StartCombiner
             json.append("\"");
             json.append("}");
             json.append("]");
+            str = p.getAllEmail();
+            if(str.length>0)
+            {
+                json.append(",\"email\":");
+                json.append("[");
+                for(int j=0; j<str.length; j++)
+                {
+                    if(j>0) json.append(",");
+                    json.append("\"");
+                    json.append(str[i]);
+                    json.append("\"");
+                }
+                json.append("]");
+            }
             json.append("},");
         }
         json.deleteCharAt(json.length()-1);
@@ -207,6 +230,7 @@ public class StartCombiner
     {
         if(args.length==2)
         { 
+            System.out.println("Got args");
             StartCombiner sC = new StartCombiner();
             LinkedList com = sC.start(args[0], args[1]);
             
@@ -218,15 +242,35 @@ public class StartCombiner
             }
             
         }
-              
-        /*StartCombiner sC = new StartCombiner();
-        LinkedList com = sC.start("facebook", "googleplus");
-        //LinkedList<Person> pL =  sC.retrieveProfiles("facebook");
-        System.out.println(com.size());
-        for(int i=0; i<com.size(); i++)
-        {
+        try {
+            //String json = Rest.getAll("test");
+            String data = "[{"
+                    + "\"name\":{\"first\":\"Sashi\",\"last\":\"Thapaliya\"},"
+                    + "\"address\":[{\"city\":\"El Cerrito\",\"state\":\"CA\"}],"
+                    + "\"email\":[\"email@email.com\"]}]";
+            System.out.println(data);
+            //Rest.insert("test",data);
+            //System.out.println(json);
+            LinkedList<Person>lP = getAllPerson(data);
+            for(int i=0; i<lP.size(); i++)
+                System.out.println(lP.get(i));
+            System.out.println(getJSON(lP));
+            /*StartCombiner sC = new StartCombiner();
+            LinkedList com = sC.start("facebook", "googleplus");
+            //LinkedList<Person> pL =  sC.retrieveProfiles("facebook");
+            System.out.println(com.size());
+            for(int i=0; i<com.size(); i++)
+            {
             System.out.println(com.get(i));
+            }
+            try {
+            Rest.insert("combined1", getJSON(com));
+            } catch (Exception ex) {
+            Logger.getLogger(StartCombiner.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println(getJSON(com));*/
+        } catch (Exception ex) {
+            Logger.getLogger(StartCombiner.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(getJSON(com));*/
     }
 }
