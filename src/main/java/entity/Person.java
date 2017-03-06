@@ -2,6 +2,7 @@ package entity;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Person class is a subclass of Entity
@@ -29,23 +30,31 @@ public class Person extends Entity {
 
 	public Person() {
 		this.merger = new PersonMerger();
-		this.init();
+		this.fieldValuePair.put(this.fieldFirstName, "");
+		this.fieldValuePair.put(this.fieldMiddleName, "");
+		this.fieldValuePair.put(this.fieldLastName, "");
+		this.fieldValuePair.put(this.fieldEmail, new LinkedList<String>());
+		this.fieldValuePair.put(this.fieldEducation, new LinkedList<Education>());
+		this.fieldValuePair.put(this.fieldCity, "");
+		this.fieldValuePair.put(this.fieldState, "");
+		this.fieldValuePair.put(this.fieldCountry, "");
+		this.fieldValuePair.put(this.fieldBirthDate, "");
 	}
 
 	public void setFirstName(String newName) {
-		if (newName.length() > 1) {
+		if (newName.length() > 0) {
 			this.fieldValuePair.put(this.fieldFirstName, newName);
 		}
 	}
 
 	public void setMiddleName(String newName) {
-		if (newName.length() > 1) {
+		if (newName.length() > 0) {
 			this.fieldValuePair.put(this.fieldMiddleName, newName);
 		}
 	}
 
 	public void setLastName(String newName) {
-		if (newName.length() > 1) {
+		if (newName.length() > 0) {
 			this.fieldValuePair.put(this.fieldLastName, newName);
 		}
 	}
@@ -183,11 +192,9 @@ public class Person extends Entity {
 
 	public String getEmail() {
 		StringBuilder em;
-		String[] allEm;
 		em = new StringBuilder("");
-		allEm = this.getAllEmail();
-		for (int i = 0; i < allEm.length; i++) {
-			em.append(allEm[i]);
+		for (String email : getEmailList()) {
+			em.append(email);
 			em.append(" ");
 		}
 		return em.toString();
@@ -195,15 +202,6 @@ public class Person extends Entity {
 
 	public LinkedList<String> getEmailList() {
 		return (LinkedList<String>) this.fieldValuePair.get(this.fieldEmail);
-	}
-
-	public String[] getAllEmail() {
-		LinkedList<String> list;
-		String[] allEm;
-		list = (LinkedList<String>) this.fieldValuePair.get(this.fieldEmail);
-		allEm = new String[list.size()];
-		list.toArray(allEm);
-		return allEm;
 	}
 
 	public String getBirthDate() {
@@ -222,16 +220,52 @@ public class Person extends Entity {
 		return (String) this.fieldValuePair.get(this.fieldCountry);
 	}
 
-	public final void init() {
-		this.fieldValuePair.put(this.fieldFirstName, "");
-		this.fieldValuePair.put(this.fieldMiddleName, "");
-		this.fieldValuePair.put(this.fieldLastName, "");
-		this.fieldValuePair.put(this.fieldEmail, new LinkedList<String>());
-		this.fieldValuePair.put(this.fieldEducation, new LinkedList<Education>());
-		this.fieldValuePair.put(this.fieldCity, "");
-		this.fieldValuePair.put(this.fieldState, "");
-		this.fieldValuePair.put(this.fieldCountry, "");
-		this.fieldValuePair.put(this.fieldBirthDate, "");
+	public String toJSON() {
+		StringBuilder json = new StringBuilder();
+		json.append("{");
+		if (getFullName().length() > 1) {
+			json.append("\"name\":{");
+			json.append("\"first\":");
+			json.append("\"");
+			json.append(getFirstName());
+			json.append("\"");
+			json.append(",");
+			json.append("\"last\":");
+			json.append("\"");
+			json.append(getLastName());
+			json.append("\"");
+		}
+		json.append("}");
+		json.append(",");
+		json.append("\"address\":");
+		json.append("[");
+		json.append("{");
+		json.append("\"city\":");
+		json.append("\"");
+		json.append(getCity());
+		json.append("\"");
+		json.append(",");
+		json.append("\"state\":");
+		json.append("\"");
+		json.append(getState());
+		json.append("\"");
+		json.append("}");
+		json.append("]");
+		List<String> emailList = getEmailList();
+		if (emailList.size() > 0) {
+			json.append(",\"email\":");
+			json.append("[");
+			for (String email : emailList) {
+				json.append("\"");
+				json.append(email);
+				json.append("\"");
+				json.append(",");
+			}
+			json.deleteCharAt(json.length() - 1);
+			json.append("]");
+		}
+		json.append("}");
+		return json.toString();
 	}
 
 	@Override

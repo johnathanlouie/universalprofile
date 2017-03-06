@@ -140,57 +140,13 @@ public class StartCombiner {
 
 	public static String getJSON(LinkedList<Person> list) {
 		StringBuilder json = new StringBuilder();
-		String[] str = null;
-		json.append("[");
-		for (int i = 0; i < list.size(); i++) {
-			Person p = list.get(i);
-			json.append("{");
-			if (p.getFullName().length() > 1) {
-				json.append("\"name\":{");
-				json.append("\"first\":");
-				json.append("\"");
-				json.append(p.getFirstName());
-				json.append("\"");
-				json.append(",");
-				json.append("\"last\":");
-				json.append("\"");
-				json.append(p.getLastName());
-				json.append("\"");
-			}
-			json.append("}");
-			json.append(",");
-			json.append("\"address\":");
-			json.append("[");
-			json.append("{");
-			json.append("\"city\":");
-			json.append("\"");
-			json.append(p.getCity());
-			json.append("\"");
-			json.append(",");
-			json.append("\"state\":");
-			json.append("\"");
-			json.append(p.getState());
-			json.append("\"");
-			json.append("}");
-			json.append("]");
-			str = p.getAllEmail();
-			if (str.length > 0) {
-				json.append(",\"email\":");
-				json.append("[");
-				for (int j = 0; j < str.length; j++) {
-					if (j > 0) {
-						json.append(",");
-					}
-					json.append("\"");
-					json.append(str[i]);
-					json.append("\"");
-				}
-				json.append("]");
-			}
-			json.append("},");
+		json.append('[');
+		for (Person p : list) {
+			json.append(p.toJSON());
+			json.append(',');
 		}
 		json.deleteCharAt(json.length() - 1);
-		json.append("]");
+		json.append(']');
 		return json.toString();
 	}
 
