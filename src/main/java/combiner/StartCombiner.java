@@ -151,14 +151,17 @@ public class StartCombiner {
 	}
 
 	public static void main(String[] args) {
-		if (args.length == 2) {
+		if (args.length == 3) {
 			System.out.println("Got args");
+			String srcName1 = args[0];
+			String srcName2 = args[1];
+			String destName = args[2];
 			StartCombiner sC = new StartCombiner();
-			LinkedList com = sC.start(args[0], args[1]);
+			LinkedList com = sC.start(srcName1, srcName2);
 
 			try {
 				//make db entry
-				Rest.insert("combined1", getJSON(com));
+				Rest.insert(destName, getJSON(com));
 			} catch (Exception ex) {
 				Logger.getLogger(StartCombiner.class.getName()).log(Level.SEVERE, null, ex);
 			}
@@ -174,8 +177,8 @@ public class StartCombiner {
 			//Rest.insert("test",data);
 			//System.out.println(json);
 			LinkedList<Person> lP = getAllPerson(data);
-			for (int i = 0; i < lP.size(); i++) {
-				System.out.println(lP.get(i));
+			for (Person p : lP) {
+				System.out.println(p);
 			}
 			System.out.println(getJSON(lP));
 			/*StartCombiner sC = new StartCombiner();
