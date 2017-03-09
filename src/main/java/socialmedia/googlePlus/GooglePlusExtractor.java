@@ -201,7 +201,7 @@ public class GooglePlusExtractor {
 
         for(Person.Organizations organization : person.getOrganizations()){
             Education edu = new Education();
-            edu.setSchool(organization.getName());
+            edu.setName(organization.getName());
             educations.add(edu);
         }
 

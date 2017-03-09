@@ -1,13 +1,12 @@
 package combiner;
 
 import entity.Person;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import rest.Rest;
+import rest.RestException;
 
 /**
  *
@@ -22,127 +21,47 @@ public class StartCombiner {
 	}
 
 	public LinkedList<Person> combine(LinkedList<LinkedList> collection) {
-		for (int i = 0; i < collection.size(); i++) {
-			this.ce.addCollection(collection.get(i));
+		for (LinkedList list : collection) {
+			this.ce.addCollection(list);
 		}
 		return this.ce.combineAll();
 	}
 
-	public LinkedList start(String coll1, String coll2) {
-		LinkedList<LinkedList> collec;
+	public List<Person> start(String coll1, String coll2) {
+		LinkedList<LinkedList> collec = new LinkedList();
 		LinkedList<Person> combined, c1, c2;
-		collec = new LinkedList();
-		c1 = this.retrieveProfiles(coll1);
-		c2 = this.retrieveProfiles(coll2);
+		c1 = retrieveProfiles(coll1);
+		c2 = retrieveProfiles(coll2);
 		if (c1 != null && c1.size() > 0) {
 			collec.add(c1);
 		}
 		if (c2 != null && c2.size() > 0) {
 			collec.add(c2);
 		}
-		combined = this.combine(collec);
+		combined = combine(collec);
 		return combined;
 	}
 
 	public LinkedList retrieveProfiles(String nameCollec) {
-		LinkedList prof = null;
-
-		try {
-			String json = Rest.getAll(nameCollec);
-			//System.out.println(Rest.getAll(nameCollec));
-			System.out.println(json);
-			prof = getAllPerson(json);
-		} catch (Exception ex) {
-			System.out.println(ex.toString());
-			Logger.getLogger(StartCombiner.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		return prof;
+		String json = Rest.getAll(nameCollec);
+		return jsonProfilesToPersonList(json);
 	}
 
-	public static Person getPerson(JSONObject obj) {
-		Person p = new Person();
-		JSONObject jO = null;
-		String first, last, city, state, phone, email;
-		first = "";
-		last = "";
-		city = "";
-		state = "";
-		phone = "";
-		email = "";
-		Iterator it = obj.keys();
-		while (it.hasNext()) {
-			String curK = (String) it.next();
-			if (curK.equals("name")) {
-
-				JSONObject temp = (JSONObject) obj.get("name");
-				Iterator itTmp = temp.keys();
-				while (itTmp.hasNext()) {
-					String temp2 = (String) itTmp.next();
-					if (temp2.equals("first")) {
-						first = (String) temp.get("first");
-					}
-					if (temp2.equals("last")) {
-						last = (String) temp.get("last");
-					}
-
-				}
-			} else if (curK.equals("address")) {
-				System.out.println(curK);
-				System.out.println();
-				JSONArray temp = (JSONArray) obj.get("address");
-				for (int i = 0; i < temp.length(); i++) {
-					JSONObject addJ = temp.getJSONObject(i);
-					Iterator itTmp = addJ.keys();
-					while (itTmp.hasNext()) {
-
-						String temp2 = (String) itTmp.next();
-						if (temp2.equals("city")) {
-							city = (String) addJ.get("city");
-						}
-						if (temp2.equals("state")) {
-							state = (String) addJ.get("state");
-						}
-
-					}
-				}
-
-			} else if (curK.equals("email")) {
-				JSONArray temp = (JSONArray) obj.get("email");
-				Iterator itTemp = temp.iterator();
-				while (itTemp.hasNext()) {
-					email = (String) itTemp.next();
-					System.out.println(email);
-					p.addEmail(email);
-				}
-
-			}
-		}
-
-		p.setFirstName(first);
-		p.setLastName(last);
-		p.setCity(city);
-		p.setState(state);
-		return p;
-	}
-
-	public static LinkedList<Person> getAllPerson(String json) {
+	public static LinkedList<Person> jsonProfilesToPersonList(String json) {
 		LinkedList<Person> listP = new LinkedList();
 		JSONArray jar = new JSONArray(json);
-		for (int i = 0; i < jar.length(); i++) {
-			Person curP = getPerson(jar.getJSONObject(i));
-			if (curP != null) {
-				listP.add(curP);
-			}
+		for (Object xx : jar) {
+			Person curP = Person.fromJson((JSONObject) xx);
+			listP.add(curP);
 		}
-
 		return listP;
 	}
 
-	public static String getJSON(LinkedList<Person> list) {
+	public static String getJSON(List<Person> list) {
 		StringBuilder json = new StringBuilder();
 		json.append('[');
 		for (Person p : list) {
-			json.append(p.toJSON());
+			json.append(p.toJson());
 			json.append(',');
 		}
 		json.deleteCharAt(json.length() - 1);
@@ -151,52 +70,35 @@ public class StartCombiner {
 	}
 
 	public static void main(String[] args) {
+		System.out.println("running StartCombiner");
 		if (args.length == 3) {
-			System.out.println("Got args");
+			System.out.println("success: args num");
 			String srcName1 = args[0];
 			String srcName2 = args[1];
 			String destName = args[2];
 			StartCombiner sC = new StartCombiner();
-			LinkedList com = sC.start(srcName1, srcName2);
-
+			List<Person> com;
 			try {
-				//make db entry
-				Rest.insert(destName, getJSON(com));
-			} catch (Exception ex) {
-				Logger.getLogger(StartCombiner.class.getName()).log(Level.SEVERE, null, ex);
+				com = sC.start(srcName1, srcName2);
+				for (Person p : com) {
+					System.out.println(p);
+					System.out.println(p.toJson());
+				}
+				String json = getJSON(com);
+				System.out.println("====start list of profiles after combining====");
+				System.out.println(json);
+				System.out.println("====end list of profiles after combining====");
+				try {
+					Rest.insert(destName, json);
+					System.out.println("success: insert");
+				} catch (Exception ex) {
+					System.out.println("failure: insert");
+				}
+			} catch (RestException ex) {
+				System.out.println("failed to connect to server");
 			}
-
-		}
-		try {
-			//String json = Rest.getAll("test");
-			String data = "[{"
-					+ "\"name\":{\"first\":\"Sashi\",\"last\":\"Thapaliya\"},"
-					+ "\"address\":[{\"city\":\"El Cerrito\",\"state\":\"CA\"}],"
-					+ "\"email\":[\"email@email.com\"]}]";
-			System.out.println(data);
-			//Rest.insert("test",data);
-			//System.out.println(json);
-			LinkedList<Person> lP = getAllPerson(data);
-			for (Person p : lP) {
-				System.out.println(p);
-			}
-			System.out.println(getJSON(lP));
-			/*StartCombiner sC = new StartCombiner();
-            LinkedList com = sC.start("facebook", "googleplus");
-            //LinkedList<Person> pL =  sC.retrieveProfiles("facebook");
-            System.out.println(com.size());
-            for(int i=0; i<com.size(); i++)
-            {
-            System.out.println(com.get(i));
-            }
-            try {
-            Rest.insert("combined1", getJSON(com));
-            } catch (Exception ex) {
-            Logger.getLogger(StartCombiner.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            System.out.println(getJSON(com));*/
-		} catch (Exception ex) {
-			Logger.getLogger(StartCombiner.class.getName()).log(Level.SEVERE, null, ex);
+		} else {
+			System.out.println("failure: args num");
 		}
 	}
 }
