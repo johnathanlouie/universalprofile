@@ -7,8 +7,7 @@ import gc
 import sys
 
 
-
-#read marker from file 
+# read marker from file
 # marker denotes the starting uid to start retreiving profile from
 marker = open("marker", 'r+')
 start = int(marker.read())
@@ -19,14 +18,11 @@ marker.close()
 
 
 # create uid list from start to end
-uid=[]
-for i in range(start,end):
-  uid.append(i)
+uid = []
+for i in range(start, end):
+    uid.append(i)
 print uid
 
 crawler = FacebookCrawler()
 crawler.setUidList(uid)
 pages = crawler.start_crawl()
-
-
-

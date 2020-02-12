@@ -4,31 +4,29 @@ import thread
 import autopy
 #import threading
 
-#IMPORTANT: USE THREAD IF YOU DON't HAVE AUTOPY
+# IMPORTANT: USE THREAD IF YOU DON't HAVE AUTOPY
 
 
 start_time = time.time()
-i=1;
-while i<300:
-  subprocess.call(["python","retrieve.py"])
-  subprocess.call(["python","generate.py"])
-  i+=1
-end_time =(time.time() - start_time)
-time_file = open("time","w")
+i = 1
+while i < 300:
+    subprocess.call(["python", "retrieve.py"])
+    subprocess.call(["python", "generate.py"])
+    i += 1
+end_time = (time.time() - start_time)
+time_file = open("time", "w")
 time_file.seek(0)
 time_file.write(str(end_time))
 time_file.close()
 
-#now shutdown computer
+# now shutdown computer
 print autopy.mouse.get_pos()
-autopy.mouse.move(1345,11)
+autopy.mouse.move(1345, 11)
 autopy.mouse.click()
-autopy.mouse.smooth_move(1161,250)
+autopy.mouse.smooth_move(1161, 250)
 autopy.mouse.click()
-autopy.mouse.smooth_move(766,411)
+autopy.mouse.smooth_move(766, 411)
 autopy.mouse.click()
-
-
 
 
 """
