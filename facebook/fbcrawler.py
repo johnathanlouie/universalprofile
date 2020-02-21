@@ -1,6 +1,9 @@
-from ghost import Ghost, Session
-from fbscrapper import Page
 import re
+
+from ghost import Ghost, Session
+
+from fbscrapper import Page
+
 
 # FacebookCrawler class to crawl facebook page
 #   Currently supports crawling of User Profile About Page

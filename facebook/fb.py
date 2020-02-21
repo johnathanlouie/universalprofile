@@ -1,8 +1,10 @@
+import sys
+import xml.etree.cElementTree as ET
+
 from fbapi import FacebookAPI
 from fbcrawler import FacebookCrawler
 from fbscrapper import FacebookProfileScrapper
-import sys
-import xml.etree.cElementTree as ET
+
 
 # This is the main object to extract user profile.
 # Combines the use of both API and Crawler to get user data

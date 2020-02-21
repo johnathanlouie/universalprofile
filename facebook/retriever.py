@@ -1,8 +1,10 @@
 import subprocess
-import time
 import thread
+# import threading
+import time
+
 import autopy
-#import threading
+
 
 # IMPORTANT: USE THREAD IF YOU DON't HAVE AUTOPY
 

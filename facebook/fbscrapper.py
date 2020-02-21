@@ -1,8 +1,8 @@
-from bs4 import BeautifulSoup
-from bs4 import NavigableString
-from bs4 import Tag
-from bs4.diagnose import diagnose
 import re
+
+from bs4 import BeautifulSoup, NavigableString, Tag
+from bs4.diagnose import diagnose
+
 
 # FacebookProfileScrapper class that handles scrapping data out of Facebook User Profiles
 #   Currently support scrapping data from About page, (contact basic tab) of User Profile

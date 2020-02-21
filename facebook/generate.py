@@ -1,9 +1,10 @@
-from pymongo import MongoClient
-from fbcrawler import FacebookCrawler
-from fbscrapper import FacebookProfileScrapper
-from fbscrapper import Page
-import re
 import gc
+import re
+
+from pymongo import MongoClient
+
+from fbcrawler import FacebookCrawler
+from fbscrapper import FacebookProfileScrapper, Page
 
 
 # read profile pages
