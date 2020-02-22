@@ -31,25 +31,33 @@ public class GooglePlusExtractor {
 
     private static final String APPLICATION_NAME = "UniversalProfile";
 
-    /** Directory to store user credentials. */
-    private static final java.io.File DATA_STORE_DIR =
-            new java.io.File(System.getProperty("user.home"), ".store/plus_sample");
+    /**
+     * Directory to store user credentials.
+     */
+    private static final java.io.File DATA_STORE_DIR
+            = new java.io.File(System.getProperty("user.home"), ".store/plus_sample");
 
     /**
-     * Global instance of the {@link DataStoreFactory}. The best practice is to make it a single
-     * globally shared instance across your application.
+     * Global instance of the {@link DataStoreFactory}. The best practice is to
+     * make it a single globally shared instance across your application.
      */
     private static FileDataStoreFactory dataStoreFactory;
 
-    /** Global instance of the HTTP transport.*/
+    /**
+     * Global instance of the HTTP transport.
+     */
     private static HttpTransport httpTransport;
 
-    /** Global instance of the JSON factory. */
+    /**
+     * Global instance of the JSON factory.
+     */
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     private static Plus plus;
 
-    /** Authorizes the installed application to access user's protected data. */
+    /**
+     * Authorizes the installed application to access user's protected data.
+     */
     private static Credential authorize() throws Exception {
         // load client secrets
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
@@ -58,7 +66,7 @@ public class GooglePlusExtractor {
                 || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
             System.out.println(
                     "Enter Client ID and Secret from https://code.google.com/apis/console/?api=plus "
-                            + "into plus-cmdline-sample/src/main/resources/client_secrets.json");
+                    + "into plus-cmdline-sample/src/main/resources/client_secrets.json");
             System.exit(1);
         }
         // set up authorization code flow
@@ -86,30 +94,32 @@ public class GooglePlusExtractor {
         }
     }
 
-    /** Get the profile for the authenticated user. */
+    /**
+     * Get the profile for the authenticated user.
+     */
     private static List<BasicDBObject> getProfiles() throws IOException {
         List<BasicDBObject> documentsToInsert = new ArrayList<>();
         BigInteger id = new BigInteger("100000000000000000000");
 
         for (;;) {
-            if(documentsToInsert.size() > 50) break;
+            if (documentsToInsert.size() > 50) {
+                break;
+            }
             id = id.add(BigInteger.ONE);
             System.out.println(id);
             Person profile;
-            try{
+            try {
                 profile = plus.people().get(id.toString()).execute(); //plus.people().search("Mark").execute() *test id - 117862007149936554018*
-            }
-            catch (GoogleJsonResponseException e) {
+            } catch (GoogleJsonResponseException e) {
                 continue;
             }
-            if(profile != null){
+            if (profile != null) {
                 List<Person.Organizations> personOrganizations = profile.getOrganizations();
                 StringBuilder org = new StringBuilder();
 
-                for(Person.Organizations organization : personOrganizations){
+                for (Person.Organizations organization : personOrganizations) {
                     org.append(organization.getName() + ", ");
                 }
-
 
                 BasicDBObject person = new BasicDBObject("gender", profile.getGender())
                         .append("birthdate", profile.getBirthday())
@@ -142,12 +152,12 @@ public class GooglePlusExtractor {
     private static BasicDBObject getProfileById(String id) {
         try {
             Person profile = plus.people().get(id).execute(); //plus.people().search("Mark").execute() *test id - 117862007149936554018*
-            if(profile != null){
+            if (profile != null) {
                 List<Person.Organizations> personOrganizations = profile.getOrganizations();
                 StringBuilder org = new StringBuilder();
 
-                if(personOrganizations != null && personOrganizations.size() > 0){
-                    for(Person.Organizations organization : personOrganizations){
+                if (personOrganizations != null && personOrganizations.size() > 0) {
+                    for (Person.Organizations organization : personOrganizations) {
                         org.append(organization.getName() + ", ");
                     }
                 }
@@ -166,13 +176,13 @@ public class GooglePlusExtractor {
         return null;
     }
 
-    public static List<entity.Person> getGooglePlusUserByName(String fullName){
+    public static List<entity.Person> getGooglePlusUserByName(String fullName) {
         initializeSearch();
         List<entity.Person> persons = new ArrayList<>();
         Long currentLimit = 5l;
         try {
             PeopleFeed people = plus.people().search(fullName).setMaxResults(currentLimit).execute();
-            for(Person gPerson : people.getItems()){
+            for (Person gPerson : people.getItems()) {
                 entity.Person entityPerson = convertGooglePersonToPersonEntity(plus.people().get(gPerson.getId()).execute());
                 persons.add(entityPerson);
             }
@@ -182,24 +192,24 @@ public class GooglePlusExtractor {
         return persons;
     }
 
-    private static entity.Person convertGooglePersonToPersonEntity(Person person){
+    private static entity.Person convertGooglePersonToPersonEntity(Person person) {
         entity.Person entityPerson = new entity.Person();
         LinkedList<String> emails = new LinkedList<>();
         LinkedList<Education> educations = new LinkedList<>();
-        if(person.getName() != null){
+        if (person.getName() != null) {
             entityPerson.setFirstName(person.getName().getGivenName());
             entityPerson.setLastName(person.getName().getFamilyName());
             entityPerson.setMiddleName(person.getName().getMiddleName() == null ? "" : person.getName().getMiddleName());
         }
-        if(person.getEmails() != null && person.getEmails().size() > 0){
-            for(Person.Emails email : person.getEmails()){
+        if (person.getEmails() != null && person.getEmails().size() > 0) {
+            for (Person.Emails email : person.getEmails()) {
                 emails.add(email.getValue());
             }
         }
         entityPerson.setEmail(emails);
         entityPerson.setBirthDate(person.getBirthday() != null ? person.getBirthday() : "");
 
-        for(Person.Organizations organization : person.getOrganizations()){
+        for (Person.Organizations organization : person.getOrganizations()) {
             Education edu = new Education();
             edu.setName(organization.getName());
             educations.add(edu);
@@ -227,5 +237,3 @@ public class GooglePlusExtractor {
 
     }
 }
-
-
